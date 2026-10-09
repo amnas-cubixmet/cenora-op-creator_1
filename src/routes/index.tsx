@@ -16,7 +16,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { formatTimeClock, formatTimeMl, type Lang } from "@/lib/formatTime";
 import { DEFAULT_FIELDS, loadFields, POSTER_FIELDS, saveFields, type PosterField, type PosterFieldVisibility } from "@/lib/posterFields";
-import { downloadBlob, downloadPngFiles, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, posterToBlob, splitOptions } from "@/lib/exportPoster";
+import { downloadBlob, downloadPngFiles, MAX_DOCTORS_PER_POSTER, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, posterToBlob, splitOptions } from "@/lib/exportPoster";
 import { STATIC_DOCTORS } from "@/store/doctors";
 
 export const Route = createFileRoute("/")({
@@ -311,8 +311,9 @@ function Index() {
             )}
           </Section>
 
-          {options.length > 0 && chosen.length > 8 && (
+          {options.length > 0 && chosen.length > MAX_DOCTORS_PER_POSTER && (
             <Section n={6} title={`Split into ${split.length} posters`}>
+              <p className="mb-2 text-xs text-muted-foreground">Maximum {MAX_DOCTORS_PER_POSTER} doctors per poster. Choose how to distribute the cards.</p>
               <div className="flex flex-wrap gap-2">
                 {options.map((o, i) => (
                   <Button key={o.join("+")} size="sm" variant={i === splitIdx ? "default" : "outline"} onClick={() => setSplitIdx(i)}>
