@@ -1,11 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
-function wordsIn(children: ReactNode) {
-  if (typeof children !== "string") return null;
-  const words = children.trim().split(/\s+/).filter(Boolean);
-  return words.length > 0 ? words : null;
-}
-
 /** Text that shrinks only after it exceeds the requested number of lines. */
 export function FitText({
   children,
@@ -24,9 +18,9 @@ export function FitText({
   const ref = useRef<HTMLDivElement>(null);
   const [fs, setFs] = useState(size);
   const [tick, setTick] = useState(0);
-  const words = keepWords ? wordsIn(children) : null;
-  const paired = words?.length === 2 ? words : null;
-  const wrap = lines > 1 && !(keepWords && words?.length === 1);
+  // Let the browser wrap naturally. Never insert a forced break between
+  // two-word department names; only shrink when the line limit is exceeded.
+  const wrap = lines > 1;
 
   useLayoutEffect(() => setFs(size), [size, children, tick]);
   useEffect(() => {
@@ -57,15 +51,7 @@ export function FitText({
         hyphens: keepWords ? "manual" : undefined,
       }}
     >
-      {paired ? (
-        <>
-          {paired[0]}
-          <br />
-          {paired[1]}
-        </>
-      ) : (
-        children
-      )}
+      {children}
     </div>
   );
 }

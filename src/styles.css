@@ -68,6 +68,10 @@
   --brand-mist: oklch(0.975 0.015 190);
   --poster-ml: "Manjari", "Noto Sans Malayalam", sans-serif;
   --poster-en: "Poppins", "Manjari", sans-serif;
+  /* Harmonized doctor typography; preserve the existing medical poster palette. */
+  --poster-doctor-name: #18363a;
+  --poster-doctor-department: #20383d;
+  --poster-doctor-qualification: #435b5f;
 
   --radius: 0.875rem;
   --background: oklch(0.982 0.01 190);
