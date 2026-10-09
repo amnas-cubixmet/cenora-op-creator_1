@@ -131,7 +131,8 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               // Two columns have a narrow text track beside the portrait.
               // Do not let longer names occupy three or more lines.
               lines={cfg.cols === 2 ? 2 : 3}
-              size={s.name}
+              size={cfg.cols === 2 && s.name === 35 ? 40 : s.name}
+              minSize={cfg.cols === 2 && s.name === 35 ? 35 : undefined}
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
