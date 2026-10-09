@@ -5,7 +5,6 @@ import type { LayoutConfig } from "@/layouts/config";
 import type { PosterFieldVisibility } from "@/lib/posterFields";
 import { DoctorTile } from "./DoctorTile";
 import { FitText } from "./FitText";
-import { splitDoctorName } from "@/lib/doctorName";
 import { formatDoctorQualifications } from "@/lib/doctorQualifications";
 
 export interface PosterDoctor extends Doctor {
@@ -16,7 +15,6 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
   const cardRef = useRef<HTMLDivElement>(null);
   const [tileSize, setTileSize] = useState(cfg.tile);
   const s = cfg.text;
-  const nameLines = splitDoctorName(d.name);
   useLayoutEffect(() => {
     const card = cardRef.current;
     if (!card) return;
@@ -114,7 +112,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               style={{
                 color: "#245B4B",
                 // Use the genuine Manjari bold face, without an artificial outline.
-                fontWeight: 800,
+                fontWeight: 900,
                 // Manjari's vowel marks extend beyond a compact line box.
                 // Reserve top/bottom ink space so no Malayalam strokes are clipped.
                 lineHeight: lang === "ml" ? 1.16 : 1.08,
@@ -133,22 +131,20 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
             <FitText
               // Two columns have a narrow text track beside the portrait.
               // Do not let longer names occupy three or more lines.
-              keepWords
-              lines={2}
+              lines={cfg.cols === 2 ? 2 : 3}
               size={cfg.cols === 2 && s.name === 35 ? 35 : s.name}
               minSize={cfg.cols === 2 && s.name === 35 ? 32 : undefined}
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
-                fontWeight: 800,
+                fontWeight: 900,
                 lineHeight: 1.12,
-                letterSpacing: 0,
+                letterSpacing: "-0.01em",
                 marginTop: fields.department ? 4 : 0,
                 fontFamily: "var(--poster-en)",
               }}
             >
-              <span style={{ display: "block", whiteSpace: "nowrap" }}>{nameLines[0]}{" "}</span>
-              <span style={{ display: "block", whiteSpace: "nowrap", minHeight: "1.12em" }}>{nameLines[1]}</span>
+              {d.name}
             </FitText>
           )}
           {qualifications && (
