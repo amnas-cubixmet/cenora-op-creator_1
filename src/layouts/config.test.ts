@@ -10,11 +10,12 @@ describe("poster card hierarchy", () => {
     }
   });
 
-  it("uses a 36px doctor name for five- and six-card layouts", () => {
+  it("balances headings and qualifications on five- and six-card layouts", () => {
     for (const count of [5, 6] as const) {
-      expect(LAYOUTS[count].text.name).toBe(37);
-      expect(LAYOUTS[count].text.dept).toBe(31);
-      expect(LAYOUTS[count].text.qual).toBe(15);
+      expect(LAYOUTS[count].text.name).toBe(31);
+      expect(LAYOUTS[count].text.dept).toBe(27);
+      expect(LAYOUTS[count].text.qual).toBe(16);
+      expect(LAYOUTS[count].text.name).toBeGreaterThan(LAYOUTS[count].text.dept);
     }
   });
 

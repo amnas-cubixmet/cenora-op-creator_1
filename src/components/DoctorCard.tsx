@@ -129,7 +129,9 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
           )}
           {fields.name && (
             <FitText
-              lines={3}
+              // Two columns have a narrow text track beside the portrait.
+              // Do not let longer names occupy three or more lines.
+              lines={cfg.cols === 2 ? 2 : 3}
               size={s.name}
               style={{
                 width: "100%",
