@@ -105,19 +105,20 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
           {fields.department && (
             <FitText
               keepWords
+              preserveGlyphs={lang === "ml"}
               lines={2}
               size={s.dept}
               style={{
                 color: "var(--poster-doctor-department)",
                 fontWeight: 800,
                 // Tiny ink boost for bold Malayalam: both 700 and 800 resolve to Manjari-Bold.
-                WebkitTextStroke: lang === "ml" ? "0.35px currentColor" : undefined,
+                WebkitTextStroke: lang === "ml" ? "0.5px currentColor" : undefined,
                 paintOrder: "stroke fill",
                 // Manjari's vowel marks extend beyond a compact line box.
                 // Reserve top/bottom ink space so no Malayalam strokes are clipped.
-                lineHeight: lang === "ml" ? 1.45 : 1.15,
-                paddingTop: lang === "ml" ? 5 : 0,
-                paddingBottom: lang === "ml" ? 6 : 0,
+                lineHeight: lang === "ml" ? 1.5 : 1.15,
+                paddingTop: lang === "ml" ? 8 : 0,
+                paddingBottom: lang === "ml" ? 8 : 0,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",
                 width: "100%",
                 boxSizing: "border-box",
@@ -139,7 +140,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
                 fontWeight: 800,
                 lineHeight: 1.12,
                 letterSpacing: "-0.01em",
-                marginTop: fields.department ? s.name * 0.08 : 0,
+                marginTop: fields.department ? Math.max(7, s.name * 0.18) : 0,
                 fontFamily: "var(--poster-en)",
               }}
             >
@@ -149,7 +150,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
           {qualifications && (
             <div
               data-doctor-qualifications
-              style={{ minWidth: 0, width: "100%", marginTop: fields.department || fields.name ? Math.max(4, s.qual * 0.3) : 0 }}
+              style={{ minWidth: 0, width: "100%", marginTop: fields.department || fields.name ? Math.max(8, s.qual * 0.45) : 0 }}
             >
               <FitText
                 lines={3}

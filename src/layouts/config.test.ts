@@ -10,6 +10,13 @@ describe("poster card hierarchy", () => {
     }
   });
 
+  it("maintains compact poster font sizes while improving glyph safety", () => {
+    expect(LAYOUTS[5].text.dept).toBe(27);
+    expect(LAYOUTS[6].text.dept).toBe(27);
+    expect(LAYOUTS[5].text.name).toBe(31);
+    expect(LAYOUTS[6].text.name).toBe(31);
+  });
+
   it("balances headings and qualifications on five- and six-card layouts", () => {
     for (const count of [5, 6] as const) {
       expect(LAYOUTS[count].text.name).toBe(31);

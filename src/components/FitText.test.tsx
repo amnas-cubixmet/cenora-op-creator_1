@@ -24,6 +24,27 @@ describe("poster typography wrapping", () => {
 });
 
 describe("Malayalam diacritic-safe text fitting", () => {
+  it("leaves Malayalam ink visible above and below a two-line department", () => {
+    const markup = renderToStaticMarkup(createElement(FitText, {
+      size: 27,
+      lines: 2,
+      keepWords: true,
+      preserveGlyphs: true,
+      style: { paddingTop: 8, paddingBottom: 8, lineHeight: 1.5 },
+    }, "റെസിഡന്റ് മെഡിക്കൽ ഓഫീസർ"));
+
+    expect(markup).toContain("overflow:visible");
+    expect(markup).toContain("padding-top:8px");
+    expect(markup).toContain("padding-bottom:8px");
+    expect(markup).toContain("line-height:1.5");
+    expect(markup).toContain("റെസിഡന്റ് മെഡിക്കൽ ഓഫീസർ");
+  });
+
+  it("still clips ordinary non-Malayalam fields such as photo timing labels", () => {
+    const markup = renderToStaticMarkup(createElement(FitText, { size: 20 }, "4:30 PM - 7:30 PM"));
+    expect(markup).toContain("overflow:hidden");
+  });
+
   it("does not count glyph breathing room as a third line", () => {
     expect(textExceedsLineLimit(95, 42, 2, 11)).toBe(false);
     expect(textExceedsLineLimit(110, 42, 2, 11)).toBe(true);

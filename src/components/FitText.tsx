@@ -12,6 +12,7 @@ export function FitText({
   style,
   lines = 1,
   keepWords = false,
+  preserveGlyphs = false,
 }: {
   children: ReactNode;
   size: number;
@@ -19,6 +20,8 @@ export function FitText({
   lines?: number;
   /** Keep each word intact. Two words wrap between them; a word that still does not fit shrinks. */
   keepWords?: boolean;
+  /** Avoid cropping tall Malayalam diacritics in Safari's line box. */
+  preserveGlyphs?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [fs, setFs] = useState(size);
@@ -54,7 +57,7 @@ export function FitText({
         ...style,
         fontSize: fs,
         whiteSpace: wrap ? "normal" : "nowrap",
-        overflow: "hidden",
+        overflow: preserveGlyphs ? "visible" : "hidden",
         overflowWrap: keepWords ? "normal" : wrap ? "break-word" : undefined,
         wordBreak: keepWords ? "keep-all" : undefined,
         hyphens: keepWords ? "manual" : undefined,
