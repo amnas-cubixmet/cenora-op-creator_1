@@ -107,8 +107,8 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               keepWords
               preserveGlyphs={lang === "ml"}
               lines={2}
-              size={cfg.cols === 2 && s.dept === 27 ? 34 : s.dept}
-              minSize={cfg.cols === 2 && s.dept === 27 ? 30 : undefined}
+              size={cfg.cols === 2 && s.dept === 27 ? 30 : s.dept}
+              minSize={cfg.cols === 2 && s.dept === 27 ? 27 : undefined}
               style={{
                 color: "#245B4B",
                 // Use the genuine Manjari bold face, without an artificial outline.
@@ -132,15 +132,15 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               // Two columns have a narrow text track beside the portrait.
               // Do not let longer names occupy three or more lines.
               lines={cfg.cols === 2 ? 2 : 3}
-              size={cfg.cols === 2 && s.name === 35 ? 40 : s.name}
-              minSize={cfg.cols === 2 && s.name === 35 ? 35 : undefined}
+              size={cfg.cols === 2 && s.name === 35 ? 35 : s.name}
+              minSize={cfg.cols === 2 && s.name === 35 ? 32 : undefined}
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
                 fontWeight: 900,
                 lineHeight: 1.12,
                 letterSpacing: "-0.01em",
-                marginTop: fields.department ? 3 : 0,
+                marginTop: fields.department ? 4 : 0,
                 fontFamily: "var(--poster-en)",
               }}
             >
@@ -157,7 +157,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
                 size={s.qual}
                 style={{
                   width: "100%",
-                  color: "var(--poster-doctor-qualification)",
+                  color: "#607477",
                   fontWeight: 600,
                   lineHeight: 1.23,
                   fontFamily: "var(--poster-en)",
