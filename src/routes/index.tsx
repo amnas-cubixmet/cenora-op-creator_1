@@ -9,6 +9,7 @@ import { Poster, POSTER_H, POSTER_W, WEEKDAYS_EN, WEEKDAYS_ML } from "@/componen
 import { ScaledPoster } from "@/components/ScaledPoster";
 import { DoctorTile } from "@/components/DoctorTile";
 import { DoctorTimeFields } from "@/components/DoctorTimeFields";
+import { ResponsiveDateField } from "@/components/ResponsiveDateField";
 import type { PosterDoctor } from "@/components/DoctorCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -190,34 +191,50 @@ function Index() {
   const filtered = doctors.filter((d) => `${d.name} ${d.deptEn} ${d.deptMl}`.toLowerCase().includes(q.toLowerCase()));
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen min-w-0 max-w-full">
       <AppHeader />
       <main className="mx-auto grid w-full min-w-0 max-w-7xl grid-cols-[minmax(0,1fr)] gap-5 px-3 py-4 sm:px-4 sm:py-6 lg:grid-cols-[minmax(340px,420px)_minmax(0,1fr)] lg:gap-6">
         <div className="min-w-0 space-y-4">
           <Section n={1} title="Date">
-            <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
-              <Button size="icon" variant="outline" className="shrink-0" onClick={() => shiftDate(-1)} aria-label="Previous day">
+            <div data-date-controls className="grid min-w-0 grid-cols-[40px_minmax(0,1fr)_40px] items-center gap-2 sm:grid-cols-[44px_minmax(0,1fr)_44px] sm:gap-3">
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                className="h-10 w-10 min-w-0 shrink-0 rounded-xl p-0 sm:h-11 sm:w-11"
+                onClick={() => shiftDate(-1)}
+                aria-label="Previous day"
+              >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Input type="date" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} className="min-w-0 w-full max-w-full [min-inline-size:0]" />
-              <Button size="icon" variant="outline" className="shrink-0" onClick={() => shiftDate(1)} aria-label="Next day">
+              <ResponsiveDateField value={date} onChange={setDate} />
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                className="h-10 w-10 min-w-0 shrink-0 rounded-xl p-0 sm:h-11 sm:w-11"
+                onClick={() => shiftDate(1)}
+                aria-label="Next day"
+              >
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <div className="col-span-2 min-w-0 leading-tight sm:col-span-1">
-                <div className="font-ml text-2xl font-bold text-brand-gradient">{WEEKDAYS_ML[weekday]}</div>
+            </div>
+            <div className="mt-3 flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-2">
+              <div className="min-w-0 leading-tight">
+                <div className="font-ml text-xl font-bold text-brand-gradient sm:text-2xl">{WEEKDAYS_ML[weekday]}</div>
                 <div className="text-xs text-muted-foreground">{WEEKDAYS_EN[weekday]}</div>
               </div>
-              <div className="flex shrink-0 items-center justify-end gap-2">
-                <Label htmlFor="show-date" className="whitespace-nowrap text-xs sm:text-sm">Show date</Label>
+              <div className="flex shrink-0 items-center gap-2">
+                <Label htmlFor="show-date" className="whitespace-nowrap text-xs font-medium sm:text-sm">Show date</Label>
                 <Switch id="show-date" checked={showDate} onCheckedChange={changeShowDate} aria-label="Show date on poster" />
               </div>
             </div>
           </Section>
 
           <Section n={2} title={`Doctors (${picks.length} selected)`}>
-            <div className="relative mb-3">
+            <div className="relative mb-3 min-w-0">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Search doctors" value={q} onChange={(e) => setQ(e.target.value)} className="pl-9" />
+              <Input placeholder="Search doctors" value={q} onChange={(e) => setQ(e.target.value)} className="h-10 min-w-0 w-full pl-9" />
             </div>
             <div data-doctor-picker-list className="flex max-h-72 min-w-0 w-full flex-col gap-1.5 overflow-x-hidden overflow-y-auto pr-1">
               {filtered.map((d) => {
@@ -228,13 +245,13 @@ function Index() {
                     type="button"
                     variant="outline"
                     onClick={() => toggle(d.id)}
-                    className={`h-auto min-h-12 min-w-0 w-full max-w-full shrink-0 justify-start gap-2 p-2 text-left sm:gap-3 ${on ? "border-primary bg-secondary" : "bg-card"}`}
+                    className={`h-auto min-h-12 min-w-0 w-full max-w-full shrink-0 justify-start gap-2 rounded-xl p-2 text-left sm:gap-3 ${on ? "border-primary bg-secondary" : "bg-card"}`}
                   >
                     <div className="shrink-0 origin-bottom-left scale-100">
                       <DoctorTile d={d} size={40} />
                     </div>
                     <div className="min-w-0 flex-1 overflow-hidden">
-                      <div className="truncate text-sm font-semibold">{d.name || "Unnamed"}</div>
+                      <div className="line-clamp-2 break-words text-sm font-semibold leading-tight">{d.name || "Unnamed"}</div>
                       <div className="truncate font-ml text-xs text-primary">{d.deptMl}</div>
                     </div>
                     <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border ${on ? "border-primary bg-primary text-primary-foreground" : ""}`}>
