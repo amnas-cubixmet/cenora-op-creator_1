@@ -500,13 +500,15 @@ export async function downloadBlob(blob: Blob, name: string) {
   window.setTimeout(() => URL.revokeObjectURL(url), 2500);
 }
 
-/** All ways to split n doctors into `pages` posters of 1–8 each (2 pages: every combo; more: even split). */
+export const MAX_DOCTORS_PER_POSTER = 6;
+
+/** Split doctors across posters with at most 6 cards each (2 pages: all valid choices; more: even split). */
 export function splitOptions(n: number): number[][] {
-  if (n <= 8) return [[n]];
-  const pages = Math.ceil(n / 8);
+  if (n <= MAX_DOCTORS_PER_POSTER) return [[n]];
+  const pages = Math.ceil(n / MAX_DOCTORS_PER_POSTER);
   if (pages === 2) {
     const out: number[][] = [];
-    for (let a = 8; a >= n - 8; a--) out.push([a, n - a]);
+    for (let a = MAX_DOCTORS_PER_POSTER; a >= n - MAX_DOCTORS_PER_POSTER; a--) out.push([a, n - a]);
     return out.sort((x, y) => Math.abs(x[0]! - x[1]!) - Math.abs(y[0]! - y[1]!));
   }
   const base = Math.floor(n / pages);
