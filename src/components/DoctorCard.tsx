@@ -5,6 +5,7 @@ import type { LayoutConfig } from "@/layouts/config";
 import type { PosterFieldVisibility } from "@/lib/posterFields";
 import { DoctorTile } from "./DoctorTile";
 import { FitText } from "./FitText";
+import { formatDoctorQualifications } from "@/lib/doctorQualifications";
 
 export interface PosterDoctor extends Doctor {
   timeText: string;
@@ -35,8 +36,8 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
     return () => observer.disconnect();
   }, [cfg, d.id, width]);
   const dept = lang === "ml" ? d.deptMl : d.deptEn;
-  const quals = fields.qualifications ? d.qualifications.split("\n").map((q) => q.trim()).filter(Boolean) : [];
-  const showSide = fields.department || fields.name || quals.length > 0 || (fields.time && !fields.photo);
+  const qualifications = fields.qualifications ? formatDoctorQualifications(d.qualifications) : "";
+  const showSide = fields.department || fields.name || Boolean(qualifications) || (fields.time && !fields.photo);
   const align = flip ? "right" : "left";
   // A single grid pairs each doctor's portrait with their own text on either side.
   // Keep the original photo tile, including its time badge, untouched.
@@ -89,35 +90,43 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
         <div data-doctor-text style={{ flex: 1, minWidth: 0, textAlign: align, display: "flex", flexDirection: "column", gridColumn: pairPhotoAndText ? (flip ? 1 : 2) : undefined, gridRow: pairPhotoAndText ? 1 : undefined }}>
           {fields.department && (
             <FitText
-              keepWords
-              lines={3}
-              size={s.dept}
+              lines={1}
+              size={Math.round(s.dept * 0.82)}
               style={{
                 color: "var(--brand-teal)",
-                fontWeight: 800,
-                lineHeight: lang === "ml" ? 1.35 : 1.08,
+                fontWeight: 700,
+                lineHeight: lang === "ml" ? 1.35 : 1.2,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",
                 width: "100%",
                 boxSizing: "border-box",
-                paddingInline: lang === "ml" ? Math.max(0.6, s.dept * 0.025) : 0,
-                ...(lang === "ml" ? { WebkitTextStroke: `${Math.max(0.6, s.dept * 0.025)}px currentColor`, paintOrder: "stroke fill" } : {}),
+                letterSpacing: 0,
               }}
             >
               {dept}
             </FitText>
           )}
           {fields.name && (
-            <FitText lines={3} size={s.name} style={{ color: "var(--brand-ink)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.02em", marginTop: fields.department ? s.name * 0.12 : 0, fontFamily: "var(--poster-en)" }}>
+            <FitText lines={3} size={s.name} style={{ color: "var(--brand-ink)", fontWeight: 800, lineHeight: 1.14, letterSpacing: "-0.01em", marginTop: fields.department ? s.name * 0.12 : 0, fontFamily: "var(--poster-en)" }}>
               {d.name}
             </FitText>
           )}
-          {quals.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: Math.max(1, s.qual * 0.1), marginTop: fields.department || fields.name ? s.qual * 0.24 : 0 }}>
-              {quals.map((q, i) => (
-                <FitText key={i} size={s.qual} style={{ color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)", fontWeight: 500, lineHeight: 1.12, fontFamily: "var(--poster-en)" }}>
-                  {q}
-                </FitText>
-              ))}
+          {qualifications && (
+            <div
+              data-doctor-qualifications
+              style={{ minWidth: 0, marginTop: fields.department || fields.name ? Math.max(3, s.qual * 0.25) : 0 }}
+            >
+              <FitText
+                lines={3}
+                size={s.qual}
+                style={{
+                  color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)",
+                  fontWeight: 500,
+                  lineHeight: 1.23,
+                  fontFamily: "var(--poster-en)",
+                }}
+              >
+                {qualifications}
+              </FitText>
             </div>
           )}
           {fields.time && !fields.photo && d.timeText && (
