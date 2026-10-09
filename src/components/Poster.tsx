@@ -9,6 +9,8 @@ import { FooterStrip } from "./FooterStrip";
 
 export const POSTER_W = 1080;
 export const POSTER_H = 1350;
+export const FOOTER_LOGO_WIDTH = 236;
+export const FOOTER_LOGO_HEIGHT = 148;
 
 export const WEEKDAYS_ML = ["ഞായർ", "തിങ്കൾ", "ചൊവ്വ", "ബുധൻ", "വ്യാഴം", "വെള്ളി", "ശനി"];
 
@@ -124,12 +126,17 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
           </span>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, var(--brand-teal), transparent)" }} />
         </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 2 }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <img src="/assets/logo-footer.png" alt="Cenora Medical Center" style={{ width: 176, height: 111, objectFit: "contain" }} />
-            <div style={{ fontSize: 18, fontStyle: "italic", color: "var(--brand-teal)", marginTop: 4 }}>Care Beyond Cure</div>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: 2 }}>
+          <div data-poster-footer-brand style={{ flex: `0 0 ${FOOTER_LOGO_WIDTH}px`, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <img
+              data-poster-footer-logo
+              src="/assets/logo-footer.png"
+              alt="Cenora Medical Center"
+              style={{ display: "block", width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
+            />
+            <div style={{ fontSize: 18, fontStyle: "italic", color: "var(--brand-teal)", marginTop: 2, textAlign: "center" }}>Care Beyond Cure</div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+          <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
             <div style={{ textAlign: "right", lineHeight: 1.25 }}>
               <div style={{ fontFamily: ml ? "var(--poster-ml)" : "var(--poster-en)", fontSize: 34, fontWeight: 700, color: "var(--brand-deep)", lineHeight: ml ? ML_LINE_HEIGHT : 1.2 }}>{ml ? "പാണ്ടിക്കാട്" : "Pandikkad"}</div>
               <div style={{ fontSize: 22, color: "var(--brand-ink)", marginTop: 2 }}>Pattath Avenue, Oravampuram</div>

@@ -12,10 +12,16 @@ describe("poster card hierarchy", () => {
 
   it("uses a 36px doctor name for five- and six-card layouts", () => {
     for (const count of [5, 6] as const) {
-      expect(LAYOUTS[count].text.name).toBe(36);
-      expect(LAYOUTS[count].text.dept).toBe(28);
+      expect(LAYOUTS[count].text.name).toBe(37);
+      expect(LAYOUTS[count].text.dept).toBe(31);
       expect(LAYOUTS[count].text.qual).toBe(15);
     }
+  });
+
+  it("enlarges the four-card headings without overpowering doctor names", () => {
+    expect(LAYOUTS[4].text.dept).toBe(34);
+    expect(LAYOUTS[4].text.name).toBe(41);
+    expect(LAYOUTS[4].text.qual).toBe(16);
   });
 
   it("fits the larger photos beside text inside each six-card poster row", () => {
