@@ -122,7 +122,7 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
       {/* Footer */}
       <div data-poster-footer style={{ position: "absolute", left: 50, right: 50, bottom: 16, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         <FooterStrip lang={lang} />
-        <div data-poster-booking-heading style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, minHeight: 34, margin: "0" }}>
+        <div data-poster-booking-heading style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, minHeight: 34, margin: "12px 0 0" }}>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, transparent, var(--brand-teal))" }} />
           <span style={{ fontFamily: ml ? "var(--poster-ml)" : "var(--poster-en)", fontWeight: 700, fontSize: 28, color: "var(--brand-deep)", lineHeight: ml ? 1.4 : 1.1, whiteSpace: "nowrap", paddingTop: ml ? 2 : 0, paddingBottom: ml ? 2 : 0 }}>
             {ml ? "ബുക്കിങ്ങിന്" : "For Booking"}
