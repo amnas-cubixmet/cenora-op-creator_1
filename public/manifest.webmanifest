@@ -1,0 +1,32 @@
+{
+  "id": "/",
+  "name": "Cenora OP Poster Creator",
+  "short_name": "Cenora OP",
+  "description": "Create the daily OP chart poster for Cenora Medical Center.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7fbfb",
+  "theme_color": "#14a3a0",
+  "lang": "ml",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
