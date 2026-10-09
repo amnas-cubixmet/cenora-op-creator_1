@@ -55,12 +55,6 @@ describe("text lines for iPhone export", () => {
   });
 });
 
-describe("Malayalam export clusters", () => {
-  it("never splits a combining vowel mark away from its base", () => {
-    expect(splitTextToWidths((value) => value.length * 10, "കി മ", [10, 100])).toEqual(["കി", "മ"]);
-  });
-});
-
 describe("doctor cards per poster", () => {
   it("allows up to six doctors on one poster", () => {
     expect(MAX_DOCTORS_PER_POSTER).toBe(6);

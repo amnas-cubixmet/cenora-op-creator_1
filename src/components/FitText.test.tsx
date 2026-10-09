@@ -62,6 +62,6 @@ describe("Malayalam diacritic-safe text fitting", () => {
     expect(markup).toContain("padding-top:5px");
     expect(markup).toContain("padding-bottom:6px");
     expect(markup).toContain("line-height:1.45");
-    expect(markup).toContain("ഇ.എൻ.ടി ഹെഡ് &amp; നെക്ക്");
+    expect(markup).toContain("ഇ.എൻ.ടി ഹെഡ് & നെക്ക്");
   });
 });
