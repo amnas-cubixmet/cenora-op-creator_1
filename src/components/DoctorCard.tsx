@@ -94,27 +94,27 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               size={s.dept}
               style={{
                 color: "var(--brand-teal)",
-                fontWeight: 900,
+                fontWeight: 800,
                 lineHeight: lang === "ml" ? 1.35 : 1.08,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",
                 width: "100%",
                 boxSizing: "border-box",
-                paddingInline: lang === "ml" ? Math.max(0.8, s.dept * 0.04) : 0,
-                ...(lang === "ml" ? { WebkitTextStroke: `${Math.max(0.8, s.dept * 0.04)}px currentColor`, paintOrder: "stroke fill" } : {}),
+                paddingInline: lang === "ml" ? Math.max(0.6, s.dept * 0.025) : 0,
+                ...(lang === "ml" ? { WebkitTextStroke: `${Math.max(0.6, s.dept * 0.025)}px currentColor`, paintOrder: "stroke fill" } : {}),
               }}
             >
               {dept}
             </FitText>
           )}
           {fields.name && (
-            <FitText lines={3} size={s.name} style={{ color: "var(--brand-ink)", fontWeight: 800, lineHeight: 1.08, marginTop: fields.department ? s.name * 0.2 : 0, fontFamily: "var(--poster-en)" }}>
+            <FitText lines={3} size={s.name} style={{ color: "var(--brand-ink)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.02em", marginTop: fields.department ? s.name * 0.12 : 0, fontFamily: "var(--poster-en)" }}>
               {d.name}
             </FitText>
           )}
           {quals.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: Math.max(1, s.qual * 0.16), marginTop: fields.department || fields.name ? s.qual * 0.35 : 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: Math.max(1, s.qual * 0.1), marginTop: fields.department || fields.name ? s.qual * 0.24 : 0 }}>
               {quals.map((q, i) => (
-                <FitText key={i} size={s.qual} style={{ color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)", fontWeight: 600, lineHeight: 1.15, fontFamily: "var(--poster-en)" }}>
+                <FitText key={i} size={s.qual} style={{ color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)", fontWeight: 500, lineHeight: 1.12, fontFamily: "var(--poster-en)" }}>
                   {q}
                 </FitText>
               ))}
