@@ -8,7 +8,7 @@ function imageUnavailable(img: HTMLImageElement | null) {
 }
 
 /** Rounded teal tile; the cut-out photo overflows the top edge. */
-export function DoctorTile({ d, size }: { d: PhotoProps; size: number }) {
+export function DoctorTile({ d, size, priority = false }: { d: PhotoProps; size: number; priority?: boolean }) {
   const h = size * 0.9;
   const imgRef = useRef<HTMLImageElement>(null);
   const [photoFailed, setPhotoFailed] = useState(false);
@@ -47,6 +47,9 @@ export function DoctorTile({ d, size }: { d: PhotoProps; size: number }) {
             src={d.photo}
             alt=""
             crossOrigin="anonymous"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
+            decoding="async"
             onError={() => setPhotoFailed(true)}
             onLoad={(event) => setPhotoFailed(imageUnavailable(event.currentTarget))}
             style={{

@@ -63,7 +63,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
     >
       {fields.photo && (
         <div data-doctor-photo style={{ position: "relative", width: tileSize, height: tileSize * 1.18, flexShrink: 0, display: "flex", alignItems: "flex-end", gridColumn: pairPhotoAndText ? (flip ? 2 : 1) : undefined, gridRow: pairPhotoAndText ? 1 : undefined }}>
-          <DoctorTile d={d} size={tileSize} />
+          <DoctorTile d={d} size={tileSize} priority />
           {fields.time && d.timeText && (
             <div
               data-poster-overlay

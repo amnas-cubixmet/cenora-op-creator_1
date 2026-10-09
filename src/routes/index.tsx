@@ -56,6 +56,13 @@ function Section({ n, title, children }: { n: number; title: string; children: R
   );
 }
 
+/** Give the progress indicator a chance to paint before exporting. */
+function letSpinnerPaint() {
+  return new Promise<void>((resolve) => {
+    requestAnimationFrame(() => window.setTimeout(resolve, 0));
+  });
+}
+
 function Index() {
   const doctors = STATIC_DOCTORS;
   const [date, setDate] = useState(DEFAULT_DATE);
@@ -145,6 +152,7 @@ function Index() {
     if (!node) return;
     setBusy(i);
     try {
+      await letSpinnerPaint();
       await downloadBlob(await posterToBlob(node, exportScale), fileName(i));
     } catch (e) {
       console.error(e);
@@ -157,6 +165,7 @@ function Index() {
     if (pages.length === 1) return downloadOne(0);
     setBusy("all");
     try {
+      await letSpinnerPaint();
       const pngs: { blob: Blob; name: string }[] = [];
       for (let i = 0; i < pages.length; i++) {
         const node = refs.current[i];

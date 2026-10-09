@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cropSource, exportPixelSize, fittedImageRect, intersectRects, MAX_DOCTORS_PER_POSTER, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, splitOptions, splitTextToWidths } from "./exportPoster";
+import { cropSource, exportPixelSize, fittedImageRect, intersectRects, MAX_DOCTORS_PER_POSTER, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, shouldIncludePosterSvgNode, splitOptions, splitTextToWidths } from "./exportPoster";
 
 describe("export scale", () => {
   it("defaults to the poster size and stops at 5×", () => {
@@ -75,5 +75,13 @@ describe("doctor cards per poster", () => {
         expect(option.every((n) => n >= 1 && n <= MAX_DOCTORS_PER_POSTER)).toBe(true);
       }
     }
+  });
+});
+
+describe("poster SVG bitmap exclusion", () => {
+  it("retains vector shapes but paints loaded photos outside the SVG", () => {
+    expect(shouldIncludePosterSvgNode(document.createElement("img"))).toBe(false);
+    expect(shouldIncludePosterSvgNode(document.createElement("div"))).toBe(true);
+    expect(shouldIncludePosterSvgNode(document.createElement("svg"))).toBe(true);
   });
 });

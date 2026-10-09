@@ -16,6 +16,8 @@ describe("PWA versioned cache", () => {
     expect(worker).toContain('"cenora-shell-4"');
     expect(worker).toContain("caches.delete");
     expect(worker).toContain("skipWaiting");
+    expect(worker).toContain("event.waitUntil(cache.put");
+    expect(worker).toContain("cache.put(request, response.clone()).catch(() => undefined)");
     expect(buildVersionDocument("4")).toContain('"version":"4"');
     expect(buildServiceWorker()).toContain(JSON.stringify(APP_VERSION));
   });

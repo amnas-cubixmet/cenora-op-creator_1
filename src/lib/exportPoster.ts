@@ -52,6 +52,11 @@ export function exportPixelSize(scale: number) {
   return { width: POSTER_W * safe, height: POSTER_H * safe };
 }
 
+/** Bitmap photos are painted separately after SVG rasterization. */
+export function shouldIncludePosterSvgNode(node: Node) {
+  return node.nodeName.toLowerCase() !== "img";
+}
+
 function setSvgAttr(attrs: string, name: string, value: string | number) {
   const pattern = new RegExp(`\\s${name}="[^"]*"`);
   const next = ` ${name}="${value}"`;
@@ -430,7 +435,6 @@ function paintDomText(canvas: HTMLCanvasElement, poster: HTMLElement) {
   if (posterRect.width < 1 || posterRect.height < 1) return;
   const scaleX = canvas.width / posterRect.width;
   const scaleY = canvas.height / posterRect.height;
-  paintPosterOverlays(canvas, poster, posterRect, scaleX, scaleY);
   paintTextTree(ctx, poster, posterRect, scaleX, scaleY, usesUnpaintableText);
 }
 
@@ -439,6 +443,7 @@ async function paintPoster(node: HTMLElement, scale: number) {
     width: POSTER_W,
     height: POSTER_H,
     cacheBust: false,
+    filter: shouldIncludePosterSvgNode,
     style: {
       transform: "none",
       width: `${POSTER_W}px`,
@@ -448,13 +453,20 @@ async function paintPoster(node: HTMLElement, scale: number) {
   const markup = sizeSvg(await (await fetch(dataUrl)).text(), scale);
   const canvas = await rasterize(markup, scale);
   paintDomImages(canvas, node);
+  // Repaint the timing chips after their portraits on every browser.
+  const rect = node.getBoundingClientRect();
+  if (rect.width > 0 && rect.height > 0) {
+    paintPosterOverlays(canvas, node, rect, canvas.width / rect.width, canvas.height / rect.height);
+  }
   paintDomText(canvas, node);
   return canvas;
 }
 
 export async function posterToBlob(node: HTMLElement, scale = MIN_EXPORT_SCALE): Promise<Blob> {
   if (document.fonts?.ready) await document.fonts.ready;
-  await Promise.all([...node.querySelectorAll("img")].map((img) => (img.decode ? img.decode().catch(() => undefined) : undefined)));
+  const images = [...node.querySelectorAll("img")];
+  for (const img of images) img.loading = "eager";
+  await Promise.all(images.map((img) => (img.decode ? img.decode().catch(() => undefined) : undefined)));
   const requested = normalizeExportScale(scale);
 
   return withoutAncestorScale(node, async () => {
