@@ -107,7 +107,8 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               keepWords
               preserveGlyphs={lang === "ml"}
               lines={2}
-              size={s.dept}
+              size={cfg.cols === 2 && s.dept === 27 ? 34 : s.dept}
+              minSize={cfg.cols === 2 && s.dept === 27 ? 30 : undefined}
               style={{
                 color: "#245B4B",
                 // Use the genuine Manjari bold face, without an artificial outline.
