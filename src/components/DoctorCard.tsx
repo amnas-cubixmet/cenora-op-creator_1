@@ -109,7 +109,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               lines={2}
               size={s.dept}
               style={{
-                color: "var(--poster-doctor-department)",
+                color: "#245B4B",
                 // Use the genuine Manjari bold face, without an artificial outline.
                 fontWeight: 700,
                 // Manjari's vowel marks extend beyond a compact line box.
