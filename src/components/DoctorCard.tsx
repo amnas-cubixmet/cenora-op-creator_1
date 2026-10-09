@@ -20,9 +20,14 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
     const fit = () => {
       const available = card.clientHeight;
       if (available <= 0) return;
-      const textColumn = width >= 800 ? 340 : 190;
-      const maxTile = Math.max(cfg.tile, width - textColumn - 18);
-      setTileSize(Math.min(maxTile, available / 1.18));
+      // Two-column posters need space for the photo AND legible doctor details.
+      // Cap the photo instead of letting it expand and squeeze the text column.
+      const compact = cfg.cols === 2;
+      const gap = compact ? 12 : Math.max(16, cfg.tile * 0.12);
+      const maxTile = compact
+        ? Math.min(cfg.tile * 1.1, width - 260 - gap)
+        : Math.max(cfg.tile, width - 340 - gap);
+      setTileSize(Math.max(72, Math.min(maxTile, available / 1.18)));
     };
     const observer = new ResizeObserver(fit);
     observer.observe(card);
@@ -33,11 +38,30 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
   const quals = fields.qualifications ? d.qualifications.split("\n").map((q) => q.trim()).filter(Boolean) : [];
   const showSide = fields.department || fields.name || quals.length > 0 || (fields.time && !fields.photo);
   const align = flip ? "right" : "left";
+  // A single grid pairs each doctor's portrait with their own text on either side.
+  // Keep the original photo tile, including its time badge, untouched.
+  const pairPhotoAndText = cfg.cols === 2 && fields.photo && showSide;
+  const gap = cfg.cols === 2 ? 12 : Math.max(16, tileSize * 0.12);
   const timeSize = Math.min(s.time, Math.max(12, tileSize * 0.1));
   return (
-    <div ref={cardRef} data-doctor-card={d.id} style={{ width, height: "100%", minHeight: 0, display: "flex", flexDirection: flip ? "row-reverse" : "row", alignItems: "center", gap: Math.max(16, tileSize * 0.12) }}>
+    <div
+      ref={cardRef}
+      data-doctor-card={d.id}
+      style={{
+        width,
+        height: "100%",
+        minHeight: 0,
+        display: pairPhotoAndText ? "grid" : "flex",
+        gridTemplateColumns: pairPhotoAndText
+          ? flip ? `minmax(0, 1fr) ${tileSize}px` : `${tileSize}px minmax(0, 1fr)`
+          : undefined,
+        flexDirection: pairPhotoAndText ? undefined : flip ? "row-reverse" : "row",
+        alignItems: "center",
+        gap,
+      }}
+    >
       {fields.photo && (
-        <div data-doctor-photo style={{ position: "relative", width: tileSize, height: tileSize * 1.18, flexShrink: 0, display: "flex", alignItems: "flex-end" }}>
+        <div data-doctor-photo style={{ position: "relative", width: tileSize, height: tileSize * 1.18, flexShrink: 0, display: "flex", alignItems: "flex-end", gridColumn: pairPhotoAndText ? (flip ? 2 : 1) : undefined, gridRow: pairPhotoAndText ? 1 : undefined }}>
           <DoctorTile d={d} size={tileSize} />
           {fields.time && d.timeText && (
             <div
@@ -62,7 +86,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
         </div>
       )}
       {showSide && (
-        <div data-doctor-text style={{ flex: 1, minWidth: 0, textAlign: align, display: "flex", flexDirection: "column" }}>
+        <div data-doctor-text style={{ flex: 1, minWidth: 0, textAlign: align, display: "flex", flexDirection: "column", gridColumn: pairPhotoAndText ? (flip ? 1 : 2) : undefined, gridRow: pairPhotoAndText ? 1 : undefined }}>
           {fields.department && (
             <FitText
               keepWords
