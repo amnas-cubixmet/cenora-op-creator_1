@@ -1,5 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
+/** Padding belongs to the glyph-safe frame, not the line count. */
+export function textExceedsLineLimit(scrollHeight: number, lineHeight: number, lines: number, paddingY = 0): boolean {
+  return scrollHeight > lineHeight * lines + paddingY + 1;
+}
+
 /** Text that shrinks only after it exceeds the requested number of lines. */
 export function FitText({
   children,
@@ -30,9 +35,13 @@ export function FitText({
     const el = ref.current;
     if (!el || el.clientWidth <= 0 || fs <= size * 0.45) return;
 
-    const lineHeight = Number.parseFloat(getComputedStyle(el).lineHeight) || fs * 1.2;
+    const computed = getComputedStyle(el);
+    const lineHeight = Number.parseFloat(computed.lineHeight) || fs * 1.2;
+    // scrollHeight includes vertical padding. Subtract it before measuring
+    // the allowed text lines; otherwise padded Malayalam text shrinks endlessly.
+    const paddingY = (Number.parseFloat(computed.paddingTop) || 0) + (Number.parseFloat(computed.paddingBottom) || 0);
     const tooWide = el.scrollWidth > el.clientWidth + 1;
-    const tooTall = el.scrollHeight > lineHeight * lines + 1;
+    const tooTall = textExceedsLineLimit(el.scrollHeight, lineHeight, lines, paddingY);
     const overflows = keepWords ? tooWide || (wrap && tooTall) : lines === 1 ? tooWide : tooTall;
 
     if (overflows) setFs((f) => f * 0.94);

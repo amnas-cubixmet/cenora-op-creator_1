@@ -110,7 +110,11 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               style={{
                 color: "var(--poster-doctor-department)",
                 fontWeight: 700,
-                lineHeight: lang === "ml" ? 1.27 : 1.15,
+                // Manjari's vowel marks extend beyond a compact line box.
+                // Reserve top/bottom ink space so no Malayalam strokes are clipped.
+                lineHeight: lang === "ml" ? 1.45 : 1.15,
+                paddingTop: lang === "ml" ? 5 : 0,
+                paddingBottom: lang === "ml" ? 6 : 0,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",
                 width: "100%",
                 boxSizing: "border-box",
