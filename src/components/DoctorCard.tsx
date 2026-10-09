@@ -6,6 +6,7 @@ import type { DoctorPosition } from "@/layouts/placement";
 import type { PosterFieldVisibility } from "@/lib/posterFields";
 import { DoctorTile } from "./DoctorTile";
 import { FitText } from "./FitText";
+import { splitDoctorName } from "@/lib/doctorName";
 import { formatDoctorQualifications } from "@/lib/doctorQualifications";
 
 export interface PosterDoctor extends Doctor {
@@ -31,6 +32,7 @@ export function DoctorCard({
   const textRef = useRef<HTMLDivElement>(null);
   const [tileSize, setTileSize] = useState(cfg.tile);
   const s = cfg.text;
+  const nameLines = splitDoctorName(d.name);
   const dept = lang === "ml" ? d.deptMl : d.deptEn;
   const qualifications = fields.qualifications ? formatDoctorQualifications(d.qualifications) : "";
   const showSide =
@@ -72,9 +74,8 @@ export function DoctorCard({
         try {
           const preferredPhoto = candidate;
           let matched = false;
-          // Try a single-line name first, at its preferred readable size.
-          // Only allow two lines when that cannot fit beside the smallest portrait.
-          for (const nameLines of [1, 2]) {
+          // Reserve the same two-line name block for every doctor.
+          for (const allowedNameLines of [2]) {
             for (candidate = preferredPhoto; ; candidate = Math.max(minTile, candidate - 8)) {
               probe.style.width = `${stacked ? width : width - candidate - gap}px`;
               const textFits = [...probe.querySelectorAll<HTMLElement>("[data-fit-lines]")].every(
@@ -82,7 +83,9 @@ export function DoctorCard({
                   const cs = getComputedStyle(el);
                   const padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
                   const allowedLines =
-                    el.dataset["fitRole"] === "name" ? nameLines : Number(el.dataset["fitLines"]);
+                    el.dataset["fitRole"] === "name"
+                      ? allowedNameLines
+                      : Number(el.dataset["fitLines"]);
                   return (
                     el.scrollWidth <= el.clientWidth + 1 &&
                     el.scrollHeight <= parseFloat(cs.lineHeight) * allowedLines + padding + 1
@@ -246,7 +249,7 @@ export function DoctorCard({
               role="name"
               lines={2}
               size={s.name}
-              minSize={cfg.cols === 2 ? Math.min(s.name, 32) : s.name * 0.9}
+              minSize={cfg.cols === 2 ? Math.min(s.name, 35) : s.name * 0.9}
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
@@ -258,7 +261,10 @@ export function DoctorCard({
                 fontFamily: "var(--poster-en)",
               }}
             >
-              {d.name}
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>{nameLines[0]} </span>
+              <span style={{ display: "block", whiteSpace: "nowrap", minHeight: "1.12em" }}>
+                {nameLines[1]}
+              </span>
             </FitText>
           )}
           {qualifications && (
