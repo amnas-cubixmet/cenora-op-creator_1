@@ -214,7 +214,8 @@ function safariDropsForeignObjectImages() {
  * Paint the live photos and logo on top, clipped the same way the preview clips them.
  */
 function paintDomImages(canvas: HTMLCanvasElement, poster: HTMLElement) {
-  if (!safariDropsForeignObjectImages()) return;
+  // Images are intentionally excluded from the SVG on every browser.
+  // Always composite the loaded DOM photos and logo onto the PNG canvas.
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
   const posterRect = poster.getBoundingClientRect();
