@@ -5,6 +5,7 @@ import type { LayoutConfig } from "@/layouts/config";
 import type { PosterFieldVisibility } from "@/lib/posterFields";
 import { DoctorTile } from "./DoctorTile";
 import { FitText } from "./FitText";
+import { formatDoctorQualifications } from "@/lib/doctorQualifications";
 
 export interface PosterDoctor extends Doctor {
   timeText: string;
@@ -35,8 +36,8 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
     return () => observer.disconnect();
   }, [cfg, d.id, width]);
   const dept = lang === "ml" ? d.deptMl : d.deptEn;
-  const quals = fields.qualifications ? d.qualifications.split("\n").map((q) => q.trim()).filter(Boolean) : [];
-  const showSide = fields.department || fields.name || quals.length > 0 || (fields.time && !fields.photo);
+  const qualifications = fields.qualifications ? formatDoctorQualifications(d.qualifications) : "";
+  const showSide = fields.department || fields.name || Boolean(qualifications) || (fields.time && !fields.photo);
   const align = flip ? "right" : "left";
   // A single grid pairs each doctor's portrait with their own text on either side.
   // Keep the original photo tile, including its time badge, untouched.
@@ -109,13 +110,23 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               {d.name}
             </FitText>
           )}
-          {quals.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: Math.max(1, s.qual * 0.1), marginTop: fields.department || fields.name ? s.qual * 0.24 : 0 }}>
-              {quals.map((q, i) => (
-                <FitText key={i} size={s.qual} style={{ color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)", fontWeight: 500, lineHeight: 1.22, fontFamily: "var(--poster-en)" }}>
-                  {q}
-                </FitText>
-              ))}
+          {qualifications && (
+            <div
+              data-doctor-qualifications
+              style={{ minWidth: 0, marginTop: fields.department || fields.name ? Math.max(3, s.qual * 0.25) : 0 }}
+            >
+              <FitText
+                lines={3}
+                size={s.qual}
+                style={{
+                  color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)",
+                  fontWeight: 500,
+                  lineHeight: 1.23,
+                  fontFamily: "var(--poster-en)",
+                }}
+              >
+                {qualifications}
+              </FitText>
             </div>
           )}
           {fields.time && !fields.photo && d.timeText && (
