@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cropSource, exportPixelSize, fittedImageRect, intersectRects, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, splitTextToWidths } from "./exportPoster";
+import { cropSource, exportPixelSize, fittedImageRect, intersectRects, MAX_DOCTORS_PER_POSTER, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, splitOptions, splitTextToWidths } from "./exportPoster";
 
 describe("export scale", () => {
   it("defaults to the poster size and stops at 5×", () => {
@@ -52,5 +52,28 @@ describe("text lines for iPhone export", () => {
     const widthOf = (value: string) => value.length * 10;
     expect(splitTextToWidths(widthOf, "രാവിലെ 10 - 4", [120])).toEqual(["രാവിലെ 10 - 4"]);
     expect(splitTextToWidths(widthOf, "General Medicine Clinic", [70, 90])).toEqual(["General", "Medicine Clinic"]);
+  });
+});
+
+describe("doctor cards per poster", () => {
+  it("allows up to six doctors on one poster", () => {
+    expect(MAX_DOCTORS_PER_POSTER).toBe(6);
+    expect(splitOptions(1)).toEqual([[1]]);
+    expect(splitOptions(6)).toEqual([[6]]);
+  });
+
+  it("splits seven or more doctors into multiple posters without losing cards", () => {
+    expect(splitOptions(7)[0]).toEqual([4, 3]);
+    expect(splitOptions(8)[0]).toEqual([4, 4]);
+    expect(splitOptions(12)[0]).toEqual([6, 6]);
+    expect(splitOptions(13)[0]).toEqual([5, 4, 4]);
+
+    for (const count of [7, 8, 9, 12, 13, 18, 19, 24]) {
+      for (const option of splitOptions(count)) {
+        expect(option.length).toBeGreaterThan(1);
+        expect(option.reduce((sum, n) => sum + n, 0)).toBe(count);
+        expect(option.every((n) => n >= 1 && n <= MAX_DOCTORS_PER_POSTER)).toBe(true);
+      }
+    }
   });
 });
