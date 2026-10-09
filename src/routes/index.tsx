@@ -2,12 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { format, parseISO } from "date-fns";
 import JSZip from "jszip";
-import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Download, Loader2, RotateCcw, Search, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Download, Loader2, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/AppHeader";
 import { Poster, POSTER_H, POSTER_W, WEEKDAYS_EN, WEEKDAYS_ML } from "@/components/Poster";
 import { ScaledPoster } from "@/components/ScaledPoster";
 import { DoctorTile } from "@/components/DoctorTile";
+import { DoctorTimeFields } from "@/components/DoctorTimeFields";
 import type { PosterDoctor } from "@/components/DoctorCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,7 +47,7 @@ const DEFAULT_DATE = format(new Date(Date.now() + 86400000), "yyyy-MM-dd");
 
 function Section({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-2xl border bg-card p-4 shadow-sm">
+    <section className="min-w-0 max-w-full rounded-2xl border bg-card p-3 shadow-sm sm:p-4">
       <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold">
         <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-gradient text-xs text-primary-foreground">{n}</span>
         {title}
@@ -198,7 +199,7 @@ function Index() {
               <Button size="icon" variant="outline" className="shrink-0" onClick={() => shiftDate(-1)} aria-label="Previous day">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Input type="date" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} className="min-w-0 w-full" />
+              <Input type="date" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} className="min-w-0 w-full max-w-full [min-inline-size:0]" />
               <Button size="icon" variant="outline" className="shrink-0" onClick={() => shiftDate(1)} aria-label="Next day">
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -218,7 +219,7 @@ function Index() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input placeholder="Search doctors" value={q} onChange={(e) => setQ(e.target.value)} className="pl-9" />
             </div>
-            <div className="grid max-h-72 gap-1.5 overflow-y-auto pr-1">
+            <div data-doctor-picker-list className="flex max-h-72 min-w-0 w-full flex-col gap-1.5 overflow-x-hidden overflow-y-auto pr-1">
               {filtered.map((d) => {
                 const on = picks.some((p) => p.id === d.id);
                 return (
@@ -227,12 +228,12 @@ function Index() {
                     type="button"
                     variant="outline"
                     onClick={() => toggle(d.id)}
-                    className={`h-auto w-full justify-start gap-3 p-2 text-left ${on ? "border-primary bg-secondary" : "bg-card"}`}
+                    className={`h-auto min-h-12 min-w-0 w-full max-w-full shrink-0 justify-start gap-2 p-2 text-left sm:gap-3 ${on ? "border-primary bg-secondary" : "bg-card"}`}
                   >
-                    <div className="origin-bottom-left scale-100">
+                    <div className="shrink-0 origin-bottom-left scale-100">
                       <DoctorTile d={d} size={40} />
                     </div>
-                    <div className="min-w-0 flex-1">
+                    <div className="min-w-0 flex-1 overflow-hidden">
                       <div className="truncate text-sm font-semibold">{d.name || "Unnamed"}</div>
                       <div className="truncate font-ml text-xs text-primary">{d.deptMl}</div>
                     </div>
@@ -247,13 +248,13 @@ function Index() {
 
           {picks.length > 0 && (
             <Section n={3} title="Order & today's timings">
-              <div className="space-y-2">
+              <div className="min-w-0 space-y-2">
                 {picks.map((p, i) => {
                   const d = byId.get(p.id);
                   if (!d) return null;
                   const changed = p.start !== d.start || p.end !== d.end;
                   return (
-                    <div key={p.id} className="rounded-xl border bg-muted/40 p-3">
+                    <div key={p.id} className="min-w-0 max-w-full rounded-xl border bg-muted/40 p-3">
                       <div className="grid grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-1 sm:gap-2">
                         <span className="w-5 text-xs font-bold text-muted-foreground">{i + 1}</span>
                         <div className="min-w-0 flex-1 truncate text-sm font-semibold">{d.name}</div>
@@ -267,16 +268,14 @@ function Index() {
                           <X className="h-4 w-4" />
                         </Button>
                       </div>
-                      <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] items-center gap-2">
-                        <Input type="time" value={p.start} onChange={(e) => update(p.id, { start: e.target.value })} className="h-8 min-w-0" />
-                        <span className="text-xs text-muted-foreground">to</span>
-                        <Input type="time" value={p.end} onChange={(e) => update(p.id, { end: e.target.value })} className="h-8 min-w-0" />
-                        {changed && (
-                          <Button size="icon" variant="ghost" className="h-8 w-8 shrink-0" onClick={() => update(p.id, { start: d.start, end: d.end })} aria-label="Reset time">
-                            <RotateCcw className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
+                      <DoctorTimeFields
+                        start={p.start}
+                        end={p.end}
+                        modified={changed}
+                        onStartChange={(start) => update(p.id, { start })}
+                        onEndChange={(end) => update(p.id, { end })}
+                        onReset={() => update(p.id, { start: d.start, end: d.end })}
+                      />
                       <div className={`mt-1.5 text-sm ${lang === "ml" ? "font-ml" : ""} font-semibold text-brand-deep`}>{formatTimeMl(p.start, p.end, lang) || "—"}</div>
                     </div>
                   );
