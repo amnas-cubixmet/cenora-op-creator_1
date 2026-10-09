@@ -20,6 +20,7 @@ import { formatTimeClock, formatTimeMl, type Lang } from "@/lib/formatTime";
 import { DEFAULT_FIELDS, loadFields, POSTER_FIELDS, saveFields, type PosterField, type PosterFieldVisibility } from "@/lib/posterFields";
 import { downloadBlob, downloadPngFiles, MAX_DOCTORS_PER_POSTER, MAX_EXPORT_SCALE, MIN_EXPORT_SCALE, normalizeExportScale, posterToBlob, splitOptions } from "@/lib/exportPoster";
 import { STATIC_DOCTORS } from "@/store/doctors";
+import { selectDefaultDoctorPicks } from "@/lib/selectDefaultDoctorPicks";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -104,10 +105,11 @@ function Index() {
   };
   const weekday = date ? parseISO(date).getDay() : new Date().getDay();
 
-  // Pre-select doctors who visit on the chosen weekday.
+  // Initially select at most one poster's worth of doctors for the date.
+  // People can still add more manually and download multiple split posters.
   useEffect(() => {
     if (!date) return;
-    setPicks(doctors.filter((d) => d.weekdays.includes(weekday)).map((d) => ({ id: d.id, start: d.start, end: d.end })));
+    setPicks(selectDefaultDoctorPicks(doctors, weekday, MAX_DOCTORS_PER_POSTER));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [weekday, date]);
 
