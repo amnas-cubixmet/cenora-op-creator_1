@@ -94,7 +94,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               lines={2}
               size={s.dept}
               style={{
-                color: "var(--brand-teal)",
+                color: "#20383D",
                 fontWeight: 700,
                 lineHeight: lang === "ml" ? 1.3 : 1.15,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",

@@ -13,7 +13,7 @@ describe("poster card hierarchy", () => {
   it("uses a 36px doctor name for five- and six-card layouts", () => {
     for (const count of [5, 6] as const) {
       expect(LAYOUTS[count].text.name).toBe(36);
-      expect(LAYOUTS[count].text.dept).toBe(30);
+      expect(LAYOUTS[count].text.dept).toBe(28);
       expect(LAYOUTS[count].text.qual).toBe(14);
     }
   });
