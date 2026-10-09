@@ -137,7 +137,6 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
               alt="Cenora Medical Center"
               style={{ display: "block", width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
             />
-            <div style={{ fontSize: 18, fontStyle: "italic", color: "var(--brand-teal)", marginTop: 2, textAlign: "center" }}>Care Beyond Cure</div>
           </div>
           <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
             <div style={{ textAlign: "right", lineHeight: 1.25 }}>
