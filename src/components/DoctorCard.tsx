@@ -135,10 +135,10 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
-                fontWeight: 800,
+                fontWeight: 900,
                 lineHeight: 1.12,
                 letterSpacing: "-0.01em",
-                marginTop: fields.department ? Math.max(7, s.name * 0.18) : 0,
+                marginTop: fields.department ? 3 : 0,
                 fontFamily: "var(--poster-en)",
               }}
             >
@@ -148,7 +148,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
           {qualifications && (
             <div
               data-doctor-qualifications
-              style={{ minWidth: 0, width: "100%", marginTop: fields.department || fields.name ? Math.max(8, s.qual * 0.45) : 0 }}
+              style={{ minWidth: 0, width: "100%", marginTop: fields.department || fields.name ? 7 : 0 }}
             >
               <FitText
                 lines={3}
