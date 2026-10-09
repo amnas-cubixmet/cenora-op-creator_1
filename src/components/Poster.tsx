@@ -122,14 +122,14 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
       {/* Footer */}
       <div data-poster-footer style={{ position: "absolute", left: 50, right: 50, bottom: 16, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         <FooterStrip lang={lang} />
-        <div data-poster-booking-heading style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, minHeight: 42, margin: "0" }}>
+        <div data-poster-booking-heading style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, minHeight: 34, margin: "0" }}>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, transparent, var(--brand-teal))" }} />
           <span style={{ fontFamily: ml ? "var(--poster-ml)" : "var(--poster-en)", fontWeight: 700, fontSize: 28, color: "var(--brand-deep)", lineHeight: ml ? 1.4 : 1.1, whiteSpace: "nowrap", paddingTop: ml ? 2 : 0, paddingBottom: ml ? 2 : 0 }}>
             {ml ? "ബുക്കിങ്ങിന്" : "For Booking"}
           </span>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, var(--brand-teal), transparent)" }} />
         </div>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: 2 }}>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: -16 }}>
           <div data-poster-footer-brand style={{ flex: `0 0 ${FOOTER_LOGO_WIDTH}px`, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
             <img
               data-poster-footer-logo
