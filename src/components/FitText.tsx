@@ -13,6 +13,7 @@ export function FitText({
   lines = 1,
   keepWords = false,
   preserveGlyphs = false,
+  minSize,
 }: {
   children: ReactNode;
   size: number;
@@ -22,6 +23,8 @@ export function FitText({
   keepWords?: boolean;
   /** Avoid cropping tall Malayalam diacritics in Safari's line box. */
   preserveGlyphs?: boolean;
+  /** Optional lower bound for readable names. */
+  minSize?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [fs, setFs] = useState(size);
@@ -29,6 +32,7 @@ export function FitText({
   // Let the browser wrap naturally. Never insert a forced break between
   // two-word department names; only shrink when the line limit is exceeded.
   const wrap = lines > 1;
+  const floor = Math.min(size, Math.max(1, minSize ?? size * 0.45));
 
   useLayoutEffect(() => setFs(size), [size, children, tick]);
   useEffect(() => {
@@ -36,7 +40,7 @@ export function FitText({
   }, []);
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el || el.clientWidth <= 0 || fs <= size * 0.45) return;
+    if (!el || el.clientWidth <= 0 || fs <= floor) return;
 
     const computed = getComputedStyle(el);
     const lineHeight = Number.parseFloat(computed.lineHeight) || fs * 1.2;
@@ -47,7 +51,7 @@ export function FitText({
     const tooTall = textExceedsLineLimit(el.scrollHeight, lineHeight, lines, paddingY);
     const overflows = keepWords ? tooWide || (wrap && tooTall) : lines === 1 ? tooWide : tooTall;
 
-    if (overflows) setFs((f) => f * 0.94);
+    if (overflows) setFs((f) => Math.max(floor, f * 0.94));
   });
 
   return (
