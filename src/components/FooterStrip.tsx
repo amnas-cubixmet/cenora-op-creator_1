@@ -29,12 +29,12 @@ export function FooterStrip({ lang }: { lang: Lang }) {
   const ml = lang === "ml";
   const font = ml ? "var(--poster-ml)" : "var(--poster-en)";
   const item = (icon: React.ReactNode, title: string, pre: string, key: string, post: string) => (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", lineHeight: ml ? 1.45 : 1.2 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 28, fontWeight: 700, color: "var(--brand-teal)" }}>
+    <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", lineHeight: ml ? 1.42 : 1.2 }}>
+      <div style={{ display: "flex", minWidth: 0, alignItems: "center", justifyContent: "center", gap: 10, fontSize: 28, fontWeight: 700, color: "var(--brand-teal)" }}>
         {icon}
         {title}
       </div>
-      <div style={{ fontSize: 22, color: "var(--brand-ink)", marginTop: 4 }}>
+      <div style={{ fontSize: 22, color: "var(--brand-ink)", marginTop: 3, textAlign: "center" }}>
         {pre}
         <span style={{ ...grad, fontWeight: 700, fontSize: 25 }}>{key}</span>
         {post}
@@ -43,11 +43,15 @@ export function FooterStrip({ lang }: { lang: Lang }) {
   );
   return (
     <div
+      data-poster-footer-strip
       style={{
         display: "flex",
         alignItems: "center",
+        width: "100%",
+        minWidth: 0,
+        boxSizing: "border-box",
         fontFamily: font,
-        padding: "14px 20px 10px",
+        padding: "8px 20px 6px",
         borderRadius: 22,
         background: "color-mix(in oklab, var(--brand-teal) 8%, white)",
         border: "1.5px solid color-mix(in oklab, var(--brand-teal) 22%, transparent)",

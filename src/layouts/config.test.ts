@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { LAYOUTS } from "./config";
+import { DOCTOR_GRID_TOP, DOCTOR_GRID_BOTTOM, POSTER_H } from "@/components/Poster";
 
 describe("poster card hierarchy", () => {
   it("keeps doctor names more prominent than the department and qualifications", () => {
@@ -36,11 +37,11 @@ describe("poster card hierarchy", () => {
     for (const count of [5, 6] as const) {
       const cfg = LAYOUTS[count];
       const photoWidth = Math.min(cfg.tile * 1.1, cfg.cardWidth - 260 - 12);
-      const rowHeight = (1350 - 158 - 348 - (cfg.gap ?? 22) * 2) / 3;
+      const rowHeight = (POSTER_H - DOCTOR_GRID_TOP - DOCTOR_GRID_BOTTOM - (cfg.gap ?? 22) * 2) / 3;
 
       expect(photoWidth).toBeGreaterThan(198);
       expect(photoWidth + 12 + 260).toBeLessThanOrEqual(cfg.cardWidth);
-      expect(photoWidth * 1.18).toBeLessThan(rowHeight);
+      expect(photoWidth * 1.18 + 16).toBeLessThan(rowHeight);
     }
   });
 });

@@ -9,6 +9,9 @@ import { FooterStrip } from "./FooterStrip";
 
 export const POSTER_W = 1080;
 export const POSTER_H = 1350;
+// Leave a clear separation between the final doctor row and the booking strip.
+export const DOCTOR_GRID_TOP = 158;
+export const DOCTOR_GRID_BOTTOM = 364;
 export const FOOTER_LOGO_WIDTH = 236;
 export const FOOTER_LOGO_HEIGHT = 148;
 
@@ -112,16 +115,16 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
       </div>
 
       {/* Doctors stop above the RMO strip. The extra room covers Malayalam leading and iOS text metrics. */}
-      <div style={{ position: "absolute", top: 158, bottom: 348, left: 40, right: 40 }}>
+      <div data-poster-doctors-area style={{ position: "absolute", top: DOCTOR_GRID_TOP, bottom: DOCTOR_GRID_BOTTOM, left: 40, right: 40 }}>
         <Layout doctors={doctors} lang={lang} fields={fields} />
       </div>
 
       {/* Footer */}
-      <div style={{ position: "absolute", left: 50, right: 50, bottom: 16, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+      <div data-poster-footer style={{ position: "absolute", left: 50, right: 50, bottom: 16, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         <FooterStrip lang={lang} />
-        <div style={{ display: "flex", alignItems: "center", gap: 18, margin: "4px 0 0" }}>
+        <div data-poster-booking-heading style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, minHeight: 42, margin: "6px 0 0" }}>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, transparent, var(--brand-teal))" }} />
-          <span style={{ fontFamily: ml ? "var(--poster-ml)" : "var(--poster-en)", fontWeight: 700, fontSize: 28, color: "var(--brand-deep)", lineHeight: ml ? ML_LINE_HEIGHT : 1.1 }}>
+          <span style={{ fontFamily: ml ? "var(--poster-ml)" : "var(--poster-en)", fontWeight: 700, fontSize: 28, color: "var(--brand-deep)", lineHeight: ml ? 1.4 : 1.1, whiteSpace: "nowrap", paddingTop: ml ? 2 : 0, paddingBottom: ml ? 2 : 0 }}>
             {ml ? "ബുക്കിങ്ങിന്" : "For Booking"}
           </span>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, var(--brand-teal), transparent)" }} />
