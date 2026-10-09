@@ -32,7 +32,6 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
   const dept = lang === "ml" ? d.deptMl : d.deptEn;
   const quals = fields.qualifications ? d.qualifications.split("\n").map((q) => q.trim()).filter(Boolean) : [];
   const showSide = fields.department || fields.name || quals.length > 0 || (fields.time && !fields.photo);
-  const align = flip ? "right" : "left";
   const timeSize = Math.min(s.time, Math.max(12, tileSize * 0.1));
   return (
     <div ref={cardRef} data-doctor-card={d.id} style={{ width, height: "100%", minHeight: 0, display: "flex", flexDirection: flip ? "row-reverse" : "row", alignItems: "center", gap: Math.max(16, tileSize * 0.12) }}>
@@ -62,7 +61,19 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
         </div>
       )}
       {showSide && (
-        <div data-doctor-text style={{ flex: 1, minWidth: 0, textAlign: align, display: "flex", flexDirection: "column" }}>
+        <div
+          data-doctor-text
+          style={{
+            flex: 1,
+            minWidth: 0,
+            textAlign: "left",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+            justifyContent: "center",
+            boxSizing: "border-box",
+          }}
+        >
           {fields.department && (
             <FitText
               keepWords
