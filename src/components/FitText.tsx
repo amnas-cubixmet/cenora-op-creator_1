@@ -26,6 +26,7 @@ export function FitText({
   keepWords = false,
   preserveGlyphs = false,
   minSize,
+  role,
 }: {
   children?: ReactNode;
   size: number;
@@ -37,6 +38,8 @@ export function FitText({
   preserveGlyphs?: boolean;
   /** Optional lower bound for readable names. */
   minSize?: number;
+  /** Semantic field used by the card measurement pass. */
+  role?: "name" | "department";
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [fs, setFs] = useState(size);
@@ -91,6 +94,7 @@ export function FitText({
   return (
     <div
       ref={ref}
+      data-fit-role={role}
       data-fit-status={status}
       data-fit-lines={lines}
       data-fit-size={size}
