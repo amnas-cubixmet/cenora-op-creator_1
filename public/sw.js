@@ -1,6 +1,6 @@
-const VERSION = "1";
-const MEDIA_CACHE = "cenora-media-1";
-const SHELL_CACHE = "cenora-shell-1";
+const VERSION = "7";
+const MEDIA_CACHE = "cenora-media-7";
+const SHELL_CACHE = "cenora-shell-7";
 const MEDIA = /\.(?:png|jpe?g|webp|gif|svg|ico|ttf|otf|woff2?)(?:$|\?)/i;
 
 self.addEventListener("install", () => {
@@ -27,10 +27,10 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin || shouldBypass(url.pathname)) return;
   if (MEDIA.test(url.pathname)) {
-    event.respondWith(cacheFirst(request, MEDIA_CACHE));
+    event.respondWith(cacheFirst(request, MEDIA_CACHE, event));
     return;
   }
-  event.respondWith(networkFirst(request, SHELL_CACHE));
+  event.respondWith(networkFirst(request, SHELL_CACHE, event));
 });
 
 function shouldBypass(pathname) {
@@ -44,23 +44,33 @@ function shouldBypass(pathname) {
   );
 }
 
-async function cacheFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
-  const cached = await cache.match(request);
-  if (cached) return cached;
+async function cacheFirst(request, cacheName, event) {
+  let cache;
+  try {
+    cache = await caches.open(cacheName);
+    const cached = await cache.match(request);
+    if (cached) return cached;
+  } catch (_) {
+    // A full or unavailable cache must not block photos.
+  }
   const response = await fetch(request);
-  if (response.ok && response.type === "basic") await cache.put(request, response.clone());
+  if (cache && response.ok && response.type === "basic") {
+    event.waitUntil(cache.put(request, response.clone()).catch(() => undefined));
+  }
   return response;
 }
 
-async function networkFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
+async function networkFirst(request, cacheName, event) {
+  let cache;
+  try { cache = await caches.open(cacheName); } catch (_) {}
   try {
     const response = await fetch(request, { cache: "no-cache" });
-    if (response.ok && response.type === "basic") await cache.put(request, response.clone());
+    if (cache && response.ok && response.type === "basic") {
+      event.waitUntil(cache.put(request, response.clone()).catch(() => undefined));
+    }
     return response;
   } catch (error) {
-    const cached = await cache.match(request);
+    const cached = cache ? await cache.match(request).catch(() => undefined) : undefined;
     if (cached) return cached;
     if (request.mode === "navigate") {
       return new Response("You are offline. Reopen Cenora OP when you are back online.", {
