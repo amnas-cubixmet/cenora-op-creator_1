@@ -1,6 +1,6 @@
 import { RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { formatTimeClock } from "@/lib/formatTime";
 
 interface DoctorTimeFieldsProps {
   start: string;
@@ -11,7 +11,39 @@ interface DoctorTimeFieldsProps {
   onReset: () => void;
 }
 
-/** Keep iOS native time pickers within the card on narrow mobile screens. */
+interface NativeTimeFieldProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+/**
+ * Mobile Safari gives a visible type=time input an intrinsic width wider than
+ * its CSS grid track. Render the selected time in our own bounded field, then
+ * place the real native input over it for iOS/Android picker interaction.
+ */
+function NativeTimeField({ label, value, onChange }: NativeTimeFieldProps) {
+  return (
+    <label className="block w-full min-w-0 max-w-full">
+      <span className="mb-1 block text-xs font-medium text-muted-foreground">{label}</span>
+      <span className="relative flex h-11 w-full min-w-0 max-w-full items-center overflow-hidden rounded-xl border border-input bg-transparent px-3 shadow-sm focus-within:ring-2 focus-within:ring-ring">
+        <span aria-hidden="true" className="block w-full min-w-0 truncate text-base font-medium text-foreground">
+          {formatTimeClock(value) || "Select time"}
+        </span>
+        <input
+          type="time"
+          aria-label={label}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className="absolute inset-0 z-10 block h-full w-full max-w-full min-w-0 cursor-pointer border-0 p-0 opacity-0 [min-inline-size:0]"
+          style={{ WebkitAppearance: "none", appearance: "none" }}
+        />
+      </span>
+    </label>
+  );
+}
+
+/** Keep iOS time controls inside each card, preserving the native picker. */
 export function DoctorTimeFields({
   start,
   end,
@@ -23,28 +55,10 @@ export function DoctorTimeFields({
   return (
     <div
       data-doctor-time-fields
-      className="mt-2 grid w-full min-w-0 grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end"
+      className="mt-2 grid w-full min-w-0 max-w-full grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] sm:items-end"
     >
-      <label className="block min-w-0 max-w-full">
-        <span className="mb-1 block text-xs font-medium text-muted-foreground">Start time</span>
-        <Input
-          type="time"
-          aria-label="Start time"
-          value={start}
-          onChange={(event) => onStartChange(event.target.value)}
-          className="h-10 w-full min-w-0 max-w-full [min-inline-size:0]"
-        />
-      </label>
-      <label className="block min-w-0 max-w-full">
-        <span className="mb-1 block text-xs font-medium text-muted-foreground">End time</span>
-        <Input
-          type="time"
-          aria-label="End time"
-          value={end}
-          onChange={(event) => onEndChange(event.target.value)}
-          className="h-10 w-full min-w-0 max-w-full [min-inline-size:0]"
-        />
-      </label>
+      <NativeTimeField label="Start time" value={start} onChange={onStartChange} />
+      <NativeTimeField label="End time" value={end} onChange={onEndChange} />
       {modified && (
         <Button
           type="button"
