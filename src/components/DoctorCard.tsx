@@ -107,7 +107,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
             </FitText>
           )}
           {fields.name && (
-            <FitText lines={3} size={s.name} style={{ color: "var(--brand-ink)", fontWeight: 800, lineHeight: 1.14, letterSpacing: "-0.01em", marginTop: fields.department ? s.name * 0.12 : 0, fontFamily: "var(--poster-en)" }}>
+            <FitText lines={3} size={s.name} style={{ color: "#18363A", fontWeight: 800, lineHeight: 1.14, letterSpacing: "-0.01em", marginTop: fields.department ? s.name * 0.12 : 0, fontFamily: "var(--poster-en)" }}>
               {d.name}
             </FitText>
           )}
