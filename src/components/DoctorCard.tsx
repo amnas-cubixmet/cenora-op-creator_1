@@ -6,7 +6,6 @@ import type { DoctorPosition } from "@/layouts/placement";
 import type { PosterFieldVisibility } from "@/lib/posterFields";
 import { DoctorTile } from "./DoctorTile";
 import { FitText } from "./FitText";
-import { splitDoctorName } from "@/lib/doctorName";
 import { formatDoctorQualifications } from "@/lib/doctorQualifications";
 
 export interface PosterDoctor extends Doctor {
@@ -32,14 +31,12 @@ export function DoctorCard({
   const textRef = useRef<HTMLDivElement>(null);
   const [tileSize, setTileSize] = useState(cfg.tile);
   const s = cfg.text;
-  const nameLines = splitDoctorName(d.name);
   const dept = lang === "ml" ? d.deptMl : d.deptEn;
   const qualifications = fields.qualifications ? formatDoctorQualifications(d.qualifications) : "";
   const showSide =
     fields.department || fields.name || Boolean(qualifications) || (fields.time && !fields.photo);
   const flip = position === "right";
-  const stacked =
-    position === "center" && cfg.centerComposition === "stacked" && fields.photo && showSide;
+  const stacked = position === "center" && cfg.centerComposition === "stacked" && fields.photo && showSide;
   const align =
     stacked || (!fields.photo && position === "center") ? "center" : flip ? "right" : "left";
   const pairPhotoAndText = !stacked && fields.photo && showSide;
@@ -72,36 +69,23 @@ export function DoctorCard({
         });
         card.appendChild(probe);
         try {
-          const preferredPhoto = candidate;
-          let matched = false;
-          // Reserve the same two-line name block for every doctor.
-          for (const allowedNameLines of [2]) {
-            for (candidate = preferredPhoto; ; candidate = Math.max(minTile, candidate - 8)) {
-              probe.style.width = `${stacked ? width : width - candidate - gap}px`;
-              const textFits = [...probe.querySelectorAll<HTMLElement>("[data-fit-lines]")].every(
-                (el) => {
-                  const cs = getComputedStyle(el);
-                  const padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
-                  const allowedLines =
-                    el.dataset["fitRole"] === "name"
-                      ? allowedNameLines
-                      : Number(el.dataset["fitLines"]);
-                  return (
-                    el.scrollWidth <= el.clientWidth + 1 &&
-                    el.scrollHeight <= parseFloat(cs.lineHeight) * allowedLines + padding + 1
-                  );
-                },
-              );
-              const needed = stacked
-                ? candidate * 1.18 + gap + probe.offsetHeight
-                : Math.max(candidate * 1.18, probe.offsetHeight);
-              if (textFits && needed <= available) {
-                matched = true;
-                break;
-              }
-              if (candidate <= minTile) break;
-            }
-            if (matched) break;
+          for (; candidate > minTile; candidate -= 8) {
+            probe.style.width = `${stacked ? width : width - candidate - gap}px`;
+            const textFits = [...probe.querySelectorAll<HTMLElement>("[data-fit-lines]")].every(
+              (el) => {
+                const cs = getComputedStyle(el);
+                const padding = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+                return (
+                  el.scrollWidth <= el.clientWidth + 1 &&
+                  el.scrollHeight <=
+                    parseFloat(cs.lineHeight) * Number(el.dataset["fitLines"]) + padding + 1
+                );
+              },
+            );
+            const needed = stacked
+              ? candidate * 1.18 + gap + probe.offsetHeight
+              : Math.max(candidate * 1.18, probe.offsetHeight);
+            if (textFits && needed <= available) break;
           }
         } finally {
           probe.remove();
@@ -218,7 +202,6 @@ export function DoctorCard({
           {fields.department && (
             <FitText
               keepWords
-              role="department"
               preserveGlyphs={lang === "ml"}
               lines={2}
               size={cfg.cols === 2 && s.dept === 27 ? 30 : s.dept}
@@ -235,7 +218,6 @@ export function DoctorCard({
                 width: "100%",
                 boxSizing: "border-box",
                 letterSpacing: 0,
-                textWrap: "balance",
               }}
             >
               {dept}
@@ -246,25 +228,20 @@ export function DoctorCard({
               // Two columns have a narrow text track beside the portrait.
               // Do not let longer names occupy three or more lines.
               keepWords
-              role="name"
               lines={2}
               size={s.name}
-              minSize={cfg.cols === 2 ? Math.min(s.name, 35) : s.name * 0.9}
+              minSize={cfg.cols === 2 ? Math.min(s.name, 32) : s.name * 0.9}
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
                 fontWeight: 800,
                 lineHeight: 1.12,
-                letterSpacing: 0,
-                textWrap: "balance",
+                letterSpacing: "-0.01em",
                 marginTop: fields.department ? 4 : 0,
                 fontFamily: "var(--poster-en)",
               }}
             >
-              <span style={{ display: "block", whiteSpace: "nowrap" }}>{nameLines[0]} </span>
-              <span style={{ display: "block", whiteSpace: "nowrap", minHeight: "1.12em" }}>
-                {nameLines[1]}
-              </span>
+              {d.name}
             </FitText>
           )}
           {qualifications && (
