@@ -112,9 +112,9 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
             </FitText>
           )}
           {quals.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: Math.max(1, s.qual * 0.1), marginTop: fields.department || fields.name ? s.qual * 0.24 : 0 }}>
+            <div data-doctor-qualifications style={{ display: "flex", flexDirection: "column", gap: Math.max(2, s.qual * 0.12), marginTop: fields.department || fields.name ? Math.max(5, s.qual * 0.28) : 0, minWidth: 0 }}>
               {quals.map((q, i) => (
-                <FitText key={i} size={s.qual} style={{ color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)", fontWeight: 500, lineHeight: 1.12, fontFamily: "var(--poster-en)" }}>
+                <FitText key={i} lines={2} size={s.qual} style={{ color: "color-mix(in oklab, var(--brand-ink) 88%, transparent)", fontWeight: 600, lineHeight: 1.18, fontFamily: "var(--poster-en)" }}>
                   {q}
                 </FitText>
               ))}
