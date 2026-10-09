@@ -111,12 +111,12 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               style={{
                 color: "#245B4B",
                 // Use the genuine Manjari bold face, without an artificial outline.
-                fontWeight: 700,
+                fontWeight: 900,
                 // Manjari's vowel marks extend beyond a compact line box.
                 // Reserve top/bottom ink space so no Malayalam strokes are clipped.
-                lineHeight: lang === "ml" ? 1.38 : 1.15,
-                paddingTop: lang === "ml" ? 8 : 0,
-                paddingBottom: lang === "ml" ? 8 : 0,
+                lineHeight: lang === "ml" ? 1.16 : 1.08,
+                paddingTop: lang === "ml" ? 5 : 0,
+                paddingBottom: lang === "ml" ? 5 : 0,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",
                 width: "100%",
                 boxSizing: "border-box",
