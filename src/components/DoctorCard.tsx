@@ -90,12 +90,13 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
         <div data-doctor-text style={{ flex: 1, minWidth: 0, textAlign: align, display: "flex", flexDirection: "column", gridColumn: pairPhotoAndText ? (flip ? 1 : 2) : undefined, gridRow: pairPhotoAndText ? 1 : undefined }}>
           {fields.department && (
             <FitText
-              lines={1}
-              size={Math.round(s.dept * 0.82)}
+              keepWords
+              lines={2}
+              size={s.dept}
               style={{
                 color: "var(--brand-teal)",
                 fontWeight: 700,
-                lineHeight: lang === "ml" ? 1.35 : 1.2,
+                lineHeight: lang === "ml" ? 1.3 : 1.15,
                 fontFamily: lang === "ml" ? "var(--poster-ml)" : "var(--poster-en)",
                 width: "100%",
                 boxSizing: "border-box",
