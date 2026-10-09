@@ -10,6 +10,16 @@ describe("poster card hierarchy", () => {
     }
   });
 
+  it("uses a legible 18px qualification label without overpowering the name", () => {
+    for (const count of [5, 6] as const) {
+      const { text } = LAYOUTS[count];
+      expect(text.qual).toBe(18);
+      expect(text.dept).toBe(26);
+      expect(text.name).toBe(33);
+      expect(text.qual).toBeLessThan(text.dept);
+    }
+  });
+
   it("fits the larger photos beside text inside each six-card poster row", () => {
     for (const count of [5, 6] as const) {
       const cfg = LAYOUTS[count];
