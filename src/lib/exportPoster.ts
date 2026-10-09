@@ -1,5 +1,6 @@
 import { toSvg } from "html-to-image";
 import { POSTER_H, POSTER_W } from "@/components/Poster";
+import { assertPosterFits, waitForPosterLayout } from "./posterPreflight";
 
 type SavedStyle = { el: HTMLElement; transform: string; opacity: string };
 
@@ -84,7 +85,7 @@ function canvasHasArtwork(canvas: HTMLCanvasElement) {
   try {
     const ctx = canvas.getContext("2d");
     if (!ctx) return false;
-    const [r, g, b, a] = ctx.getImageData(24, 24, 1, 1).data;
+    const [r = 255, g = 255, b = 255, a = 0] = ctx.getImageData(24, 24, 1, 1).data;
     return a > 0 && (r < 250 || g < 250 || b < 250);
   } catch {
     return true;
@@ -304,7 +305,7 @@ function usesUnpaintableText(style: CSSStyleDeclaration) {
 function colorIsClear(color: string) {
   const match = color.match(/rgba?\(([^)]+)\)/);
   if (!match) return color === "transparent";
-  const parts = match[1].split(",").map((part) => Number.parseFloat(part.trim()));
+  const parts = (match[1] ?? "").split(",").map((part) => Number.parseFloat(part.trim()));
   return parts.length === 4 && parts[3] === 0;
 }
 
@@ -329,12 +330,16 @@ export function splitTextToWidths(measure: (value: string) => number, text: stri
     }
     const target = widths[i] ?? 0;
     let fit = 0;
-    for (let end = 1; end <= rest.length; end++) {
+    // Malayalam combining marks and conjuncts must stay in their grapheme cluster.
+    const segments = new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(rest);
+    for (const segment of segments) {
+      const end = segment.index + segment.segment.length;
       if (measure(rest.slice(0, end)) <= target + 1) fit = end;
       else break;
     }
     const space = rest.lastIndexOf(" ", fit);
-    const cut = space > 0 ? space : Math.max(fit, 1);
+    const first = [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(rest)][0]?.segment.length ?? 0;
+    const cut = space > 0 ? space : Math.max(fit, first);
     parts.push(rest.slice(0, cut));
     rest = rest.slice(cut).replace(/^\s+/, "");
   }
@@ -468,6 +473,8 @@ export async function posterToBlob(node: HTMLElement, scale = MIN_EXPORT_SCALE):
   const images = [...node.querySelectorAll("img")];
   for (const img of images) img.loading = "eager";
   await Promise.all(images.map((img) => (img.decode ? img.decode().catch(() => undefined) : undefined)));
+  await waitForPosterLayout(node);
+  assertPosterFits(node);
   const requested = normalizeExportScale(scale);
 
   return withoutAncestorScale(node, async () => {
@@ -534,7 +541,7 @@ export async function downloadPngFiles(items: { blob: Blob; name: string }[]) {
   const files = items.map((item) => new File([item.blob], item.name, { type: "image/png" }));
   if (items.length > 1 && (await shareFiles(files))) return false;
   if (items.length === 1) {
-    await downloadBlob(items[0].blob, items[0].name);
+    await downloadBlob(items[0]!.blob, items[0]!.name);
     return false;
   }
   return true;

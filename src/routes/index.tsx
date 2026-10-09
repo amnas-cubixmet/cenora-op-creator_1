@@ -122,6 +122,9 @@ function Index() {
     });
 
   const options = splitOptions(chosen.length);
+  if (chosen.length > 1 && chosen.length <= MAX_DOCTORS_PER_POSTER) {
+    options.push([Math.ceil(chosen.length / 2), Math.floor(chosen.length / 2)]);
+  }
   const split = options[Math.min(splitIdx, options.length - 1)] ?? [0];
   useEffect(() => setSplitIdx(0), [chosen.length]);
   const pages: PosterDoctor[][] = [];
@@ -160,7 +163,7 @@ function Index() {
       await downloadBlob(await posterToBlob(node, exportScale), fileName(i));
     } catch (e) {
       console.error(e);
-      toast.error("Could not create the image. Please try again.");
+      toast.error(e instanceof Error ? e.message : "Could not create the image. Please try again.");
     } finally {
       setBusy(null);
     }
@@ -184,7 +187,7 @@ function Index() {
       }
     } catch (e) {
       console.error(e);
-      toast.error("Could not create the images. Please try again.");
+      toast.error(e instanceof Error ? e.message : "Could not create the images. Please try again.");
     } finally {
       setBusy(null);
     }
@@ -338,7 +341,7 @@ function Index() {
             )}
           </Section>
 
-          {options.length > 0 && chosen.length > MAX_DOCTORS_PER_POSTER && (
+          {options.length > 1 && (
             <Section n={6} title={`Split into ${split.length} posters`}>
               <p className="mb-2 text-xs text-muted-foreground">Maximum {MAX_DOCTORS_PER_POSTER} doctors per poster. Choose how to distribute the cards.</p>
               <div className="flex flex-wrap gap-2">

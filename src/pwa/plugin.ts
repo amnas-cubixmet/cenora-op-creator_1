@@ -23,11 +23,11 @@ export function cenoraPwaPlugin(): Plugin {
       root = config.root;
     },
     buildStart() {
-      if (process.env.VITEST) return;
+      if (process.env["VITEST"]) return;
       writePwaFiles(root);
     },
     configureServer(server) {
-      if (process.env.VITEST) return;
+      if (process.env["VITEST"]) return;
       writePwaFiles(root);
       server.middlewares.use((req, res, next) => {
         const path = req.url?.split("?")[0];

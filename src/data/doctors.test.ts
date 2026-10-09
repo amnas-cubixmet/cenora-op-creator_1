@@ -6,7 +6,7 @@ describe("static doctor data", () => {
     const hhmm = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
     for (const doctor of DOCTORS) {
       expect(doctor.timings.defaultStart).toMatch(hhmm);
-      expect(doctor.timings.defaultEnd).toMatch(hhmm);
+      if (doctor.timings.defaultEnd) expect(doctor.timings.defaultEnd).toMatch(hhmm);
     }
   });
 

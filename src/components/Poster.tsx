@@ -116,7 +116,7 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
 
       {/* Doctors stop above the RMO strip. The extra room covers Malayalam leading and iOS text metrics. */}
       <div data-poster-doctors-area style={{ position: "absolute", top: DOCTOR_GRID_TOP, bottom: DOCTOR_GRID_BOTTOM, left: 40, right: 40 }}>
-        <Layout doctors={doctors} lang={lang} fields={fields} />
+        <Layout doctors={doctors} lang={lang} fields={fields} fontKey={enFont} />
       </div>
 
       {/* Footer */}
