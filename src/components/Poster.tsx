@@ -10,8 +10,8 @@ import { FooterStrip } from "./FooterStrip";
 export const POSTER_W = 1080;
 export const POSTER_H = 1350;
 // Leave a clear separation between the final doctor row and the booking strip.
-export const DOCTOR_GRID_TOP = 158;
-export const DOCTOR_GRID_BOTTOM = 364;
+export const DOCTOR_GRID_TOP = 140;
+export const DOCTOR_GRID_BOTTOM = 300;
 export const FOOTER_LOGO_WIDTH = 280;
 export const FOOTER_LOGO_HEIGHT = 176;
 
@@ -115,7 +115,7 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
       </div>
 
       {/* Doctors stop above the RMO strip. The extra room covers Malayalam leading and iOS text metrics. */}
-      <div data-poster-doctors-area style={{ position: "absolute", top: DOCTOR_GRID_TOP, bottom: DOCTOR_GRID_BOTTOM, left: 40, right: 40 }}>
+      <div data-poster-doctors-area style={{ position: "absolute", top: DOCTOR_GRID_TOP, bottom: DOCTOR_GRID_BOTTOM, left: 35, right: 35 }}>
         <Layout doctors={doctors} lang={lang} fields={fields} />
       </div>
 

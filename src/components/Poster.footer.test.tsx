@@ -3,8 +3,8 @@ import { DOCTOR_GRID_BOTTOM, DOCTOR_GRID_TOP, FOOTER_LOGO_HEIGHT, FOOTER_LOGO_WI
 
 describe("poster footer branding", () => {
   it("sets aside a visible gap above the footer without shrinking the logo", () => {
-    expect(DOCTOR_GRID_TOP).toBe(158);
-    expect(DOCTOR_GRID_BOTTOM).toBe(364);
+    expect(DOCTOR_GRID_TOP).toBe(140);
+    expect(DOCTOR_GRID_BOTTOM).toBe(300);
     expect(POSTER_H - DOCTOR_GRID_TOP - DOCTOR_GRID_BOTTOM).toBeGreaterThan(800);
   });
 
