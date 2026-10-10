@@ -12,8 +12,8 @@ export const POSTER_H = 1350;
 // Leave a clear separation between the final doctor row and the booking strip.
 export const DOCTOR_GRID_TOP = 140;
 export const DOCTOR_GRID_BOTTOM = 300;
-export const FOOTER_LOGO_WIDTH = 280;
-export const FOOTER_LOGO_HEIGHT = 176;
+export const FOOTER_LOGO_WIDTH = 400;
+export const FOOTER_LOGO_HEIGHT = 250;
 
 export const WEEKDAYS_ML = ["ഞായർ", "തിങ്കൾ", "ചൊവ്വ", "ബുധൻ", "വ്യാഴം", "വെള്ളി", "ശനി"];
 
