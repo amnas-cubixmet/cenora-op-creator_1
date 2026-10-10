@@ -304,12 +304,13 @@ function Index() {
           )}
 
           <Section n={4} title="Fields">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid min-w-0 gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 160px), 1fr))" }}>
               {POSTER_FIELDS.map((field) => (
-                <div key={field.id} className="flex items-center justify-between gap-2 rounded-lg border px-3 py-2">
-                  <Label htmlFor={`field-${field.id}`} className="text-sm">{field.label}</Label>
+                <div key={field.id} className="flex min-w-0 items-center justify-between gap-2 rounded-lg border px-3 py-2">
+                  <Label htmlFor={`field-${field.id}`} className="min-w-0 break-words text-sm leading-snug">{field.label}</Label>
                   <Switch
                     id={`field-${field.id}`}
+                    className="shrink-0"
                     checked={fields[field.id]}
                     onCheckedChange={(checked) => changeField(field.id, checked)}
                     aria-label={`Show ${field.label}`}
