@@ -1,4 +1,3 @@
-import { Logo } from "@/components/Logo";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useInstallPrompt } from "@/pwa/useInstallPrompt";
@@ -9,8 +8,8 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-20 border-b bg-card/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
-        <Logo size="small" className="shrink-0" />
-        <div className="hidden min-w-0 flex-1 leading-tight sm:block">
+        <img src="/assets/logo-mark.png" alt="Cenora" className="h-9 w-9 shrink-0 object-contain" />
+        <div className="min-w-0 flex-1 leading-tight">
           <div className="font-ml text-lg font-bold text-brand-gradient">ഓ.പി പോസ്റ്റർ</div>
           <div className="truncate text-xs text-muted-foreground">Cenora OP Poster Creator</div>
         </div>

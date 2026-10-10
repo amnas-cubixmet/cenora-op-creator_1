@@ -5,7 +5,6 @@ import { LAYOUT_COMPONENTS } from "@/layouts";
 import type { PosterFieldVisibility } from "@/lib/posterFields";
 import type { PosterDoctor } from "./DoctorCard";
 import { FitText } from "./FitText";
-import { Logo } from "./Logo";
 import { FooterStrip } from "./FooterStrip";
 
 export const POSTER_W = 1080;
@@ -132,9 +131,12 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
         </div>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: -60 }}>
           <div data-poster-footer-brand style={{ flex: `0 0 ${FOOTER_LOGO_WIDTH}px`, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ display: "flex", alignItems: "center", position: "relative", top: 20, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT }}>
-              <Logo size="medium" />
-            </div>
+            <img
+              data-poster-footer-logo
+              src="/assets/logo-footer.png"
+              alt="Cenora Medical Center"
+              style={{ display: "block", position: "relative", top: 20, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
+            />
           </div>
           <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
             <div style={{ textAlign: "right", lineHeight: 1.25 }}>
