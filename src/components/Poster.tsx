@@ -13,7 +13,7 @@ export const POSTER_H = 1350;
 export const DOCTOR_GRID_TOP = 140;
 export const DOCTOR_GRID_BOTTOM = 300;
 export const FOOTER_LOGO_WIDTH = 320;
-export const FOOTER_LOGO_HEIGHT = 215;
+export const FOOTER_LOGO_HEIGHT = 225;
 
 export const WEEKDAYS_ML = ["ഞായർ", "തിങ്കൾ", "ചൊവ്വ", "ബുധൻ", "വ്യാഴം", "വെള്ളി", "ശനി"];
 
