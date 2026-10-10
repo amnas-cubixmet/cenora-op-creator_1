@@ -137,11 +137,11 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
-                fontWeight: !flip && d.name === "Dr. Rimpy Joseph" ? 700 : 900,
+                fontWeight: 900,
                 lineHeight: 1.12,
                 letterSpacing: "-0.01em",
                 marginTop: fields.department ? 4 : 0,
-                fontFamily: !flip && d.name === "Dr. Rimpy Joseph" ? "Arial, sans-serif" : "var(--poster-en)",
+                fontFamily: "var(--poster-en)",
               }}
             >
               {d.name}
