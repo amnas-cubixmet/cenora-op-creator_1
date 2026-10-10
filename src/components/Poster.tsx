@@ -135,7 +135,7 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
               data-poster-footer-logo
               src="/assets/logo-footer.png"
               alt="Cenora Medical Center"
-              style={{ display: "block", position: "relative", top: 20, maxWidth: "none", flexShrink: 0, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
+              style={{ display: "block", position: "relative", top: 30, maxWidth: "none", flexShrink: 0, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
             />
           </div>
           <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
