@@ -14,10 +14,10 @@ describe("default doctor selection", () => {
       .toEqual(["doctor-1", "doctor-2", "doctor-3", "doctor-4", "doctor-5", "doctor-6"]);
   });
 
-  it("selects fewer when fewer than six doctors visit that day", () => {
+  it("fills to six after prioritizing doctors visiting that day", () => {
     expect(selectDefaultDoctorPicks(doctors, 2, 6).map((doctor) => doctor.id))
-      .toEqual(["doctor-1", "doctor-3", "doctor-5", "doctor-7", "doctor-9"]);
-    expect(selectDefaultDoctorPicks(doctors, 0, 6)).toEqual([]);
+      .toEqual(["doctor-1", "doctor-3", "doctor-5", "doctor-7", "doctor-9", "doctor-2"]);
+    expect(selectDefaultDoctorPicks(doctors, 0, 6)).toHaveLength(6);
   });
 
   it("keeps start/end times and does not mutate master data", () => {
