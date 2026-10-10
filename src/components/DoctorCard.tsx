@@ -110,7 +110,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               size={cfg.cols === 2 && s.dept === 27 ? 30 : s.dept}
               minSize={dept === "ഉദര രോഗ വിഭാഗം ഗ്യാസ്ട്രോ എന്ററോളജി" ? Math.min(s.dept, 24) : cfg.cols === 2 && s.dept === 27 ? 27 : undefined}
               style={{
-                color: "#245B4B",
+                color: "#0e7c86",
                 // Use the genuine Manjari bold face, without an artificial outline.
                 fontWeight: 900,
                 // Manjari's vowel marks extend beyond a compact line box.
