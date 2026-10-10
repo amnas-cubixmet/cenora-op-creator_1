@@ -149,6 +149,11 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
                   <span style={{ display: "block", whiteSpace: "nowrap" }}>Dr. Rahul Das{" "}</span>
                   <span style={{ display: "block", whiteSpace: "nowrap" }}>N T</span>
                 </>
+              ) : d.name === "Allergy-Asthma Foundation Team" ? (
+                <>
+                  <span style={{ display: "block", whiteSpace: "nowrap" }}>Allergy-Asthma{" "}</span>
+                  <span style={{ display: "block", whiteSpace: "nowrap" }}>Foundation Team</span>
+                </>
               ) : d.name}
             </FitText>
           )}
