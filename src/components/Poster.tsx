@@ -6,6 +6,7 @@ import type { PosterFieldVisibility } from "@/lib/posterFields";
 import type { PosterDoctor } from "./DoctorCard";
 import { FitText } from "./FitText";
 import { FooterStrip } from "./FooterStrip";
+import { Logo } from "./Logo";
 
 export const POSTER_W = 1080;
 export const POSTER_H = 1350;
@@ -131,12 +132,9 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
         </div>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: -130 }}>
           <div data-poster-footer-brand style={{ flex: "0 0 300px", minWidth: 0, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            <img
-              data-poster-footer-logo
-              src="/assets/logo-combined.svg"
-              alt="Cenora Medical Center"
-              style={{ display: "block", position: "relative", top: 60, maxWidth: "none", flexShrink: 0, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
-            />
+            <div style={{ display: "flex", alignItems: "center", position: "relative", top: 60, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT }}>
+              <Logo width={FOOTER_LOGO_WIDTH} />
+            </div>
           </div>
           <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
             <div style={{ flex: 1, minWidth: 0, textAlign: "right", lineHeight: 1.25 }}>
