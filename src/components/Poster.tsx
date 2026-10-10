@@ -130,25 +130,25 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, var(--brand-teal), transparent)" }} />
         </div>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: -60 }}>
-          <div data-poster-footer-brand style={{ flex: `0 0 ${FOOTER_LOGO_WIDTH}px`, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div data-poster-footer-brand style={{ flex: "0 0 300px", minWidth: 0, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
             <img
               data-poster-footer-logo
               src="/assets/logo-footer.png"
               alt="Cenora Medical Center"
-              style={{ display: "block", position: "relative", top: 20, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
+              style={{ display: "block", position: "relative", top: 20, maxWidth: "none", flexShrink: 0, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
             />
           </div>
           <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
-            <div style={{ textAlign: "right", lineHeight: 1.25 }}>
+            <div style={{ flex: 1, minWidth: 0, textAlign: "right", lineHeight: 1.25 }}>
               <div style={{ fontFamily: ml ? "var(--poster-ml)" : "var(--poster-en)", fontSize: 34, fontWeight: 700, color: "var(--brand-deep)", lineHeight: ml ? ML_LINE_HEIGHT : 1.2 }}>{ml ? "പാണ്ടിക്കാട്" : "Pandikkad"}</div>
-              <div style={{ fontSize: 22, color: "var(--brand-ink)", marginTop: 2 }}>Pattath Avenue, Oravampuram</div>
+              <div style={{ fontSize: 22, color: "var(--brand-ink)", marginTop: 2, whiteSpace: "nowrap" }}>Pattath Avenue, Oravampuram</div>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8, marginTop: 8, whiteSpace: "nowrap" }}>
                 <Fb />
                 <Ig />
                 <span style={{ fontSize: 20, fontWeight: 600, color: "var(--brand-deep)", marginLeft: 2 }}>cenora_medical_center</span>
               </div>
             </div>
-            <div style={{ display: "flex", alignItems: "stretch", borderRadius: 16, overflow: "hidden", boxShadow: "0 10px 24px -14px var(--brand-deep)" }}>
+            <div style={{ display: "flex", flexShrink: 0, whiteSpace: "nowrap", alignItems: "stretch", borderRadius: 16, overflow: "hidden", boxShadow: "0 10px 24px -14px var(--brand-deep)" }}>
               <div
                 style={{
                   writingMode: "vertical-rl",
