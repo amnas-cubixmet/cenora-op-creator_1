@@ -144,7 +144,12 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
                 fontFamily: "var(--poster-en)",
               }}
             >
-              {d.name}
+              {d.name === "Dr. Rahul Das N T" ? (
+                <>
+                  <span style={{ display: "block", whiteSpace: "nowrap" }}>Dr. Rahul Das{" "}</span>
+                  <span style={{ display: "block", whiteSpace: "nowrap" }}>N T</span>
+                </>
+              ) : d.name}
             </FitText>
           )}
           {qualifications && (
