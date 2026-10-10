@@ -129,7 +129,7 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
           </span>
           <div style={{ flex: 1, height: 2, background: "linear-gradient(90deg, var(--brand-teal), transparent)" }} />
         </div>
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: -60 }}>
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 18, marginTop: -76 }}>
           <div data-poster-footer-brand style={{ flex: "0 0 300px", minWidth: 0, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
             <img
               data-poster-footer-logo
