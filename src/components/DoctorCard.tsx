@@ -108,7 +108,7 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
               preserveGlyphs={lang === "ml"}
               lines={2}
               size={cfg.cols === 2 && s.dept === 27 ? 30 : s.dept}
-              minSize={cfg.cols === 2 && s.dept === 27 ? 27 : undefined}
+              minSize={dept === "ഉദര രോഗ വിഭാഗം ഗ്യാസ്ട്രോ എന്ററോളജി" ? Math.min(s.dept, 24) : cfg.cols === 2 && s.dept === 27 ? 27 : undefined}
               style={{
                 color: "#245B4B",
                 // Use the genuine Manjari bold face, without an artificial outline.
@@ -124,7 +124,12 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
                 letterSpacing: 0,
               }}
             >
-              {dept}
+              {dept === "ഉദര രോഗ വിഭാഗം ഗ്യാസ്ട്രോ എന്ററോളജി" ? (
+                <>
+                  <span style={{ display: "block", whiteSpace: "nowrap" }}>ഉദര രോഗ വിഭാഗം{" "}</span>
+                  <span style={{ display: "block", whiteSpace: "nowrap" }}>ഗ്യാസ്ട്രോ എന്ററോളജി</span>
+                </>
+              ) : dept}
             </FitText>
           )}
           {fields.name && (
