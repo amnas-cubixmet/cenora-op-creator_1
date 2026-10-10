@@ -131,9 +131,10 @@ export function DoctorCard({ d, cfg, flip, lang, width, fields }: { d: PosterDoc
             <FitText
               // Two columns have a narrow text track beside the portrait.
               // Do not let longer names occupy three or more lines.
+              keepWords={d.name === "Allergy-Asthma Foundation Team"}
               lines={cfg.cols === 2 ? 2 : 3}
               size={cfg.cols === 2 && s.name === 35 ? 35 : s.name}
-              minSize={cfg.cols === 2 && s.name === 35 ? 32 : undefined}
+              minSize={d.name === "Allergy-Asthma Foundation Team" ? Math.min(s.name, 24) : cfg.cols === 2 && s.name === 35 ? 32 : undefined}
               style={{
                 width: "100%",
                 color: "var(--poster-doctor-name)",
