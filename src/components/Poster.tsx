@@ -13,7 +13,7 @@ export const POSTER_H = 1350;
 export const DOCTOR_GRID_TOP = 140;
 export const DOCTOR_GRID_BOTTOM = 300;
 export const FOOTER_LOGO_WIDTH = 320;
-export const FOOTER_LOGO_HEIGHT = 225;
+export const FOOTER_LOGO_HEIGHT = 250;
 
 export const WEEKDAYS_ML = ["ഞായർ", "തിങ്കൾ", "ചൊവ്വ", "ബുധൻ", "വ്യാഴം", "വെള്ളി", "ശനി"];
 
@@ -135,7 +135,7 @@ export const Poster = forwardRef<HTMLDivElement, Props>(function Poster({ doctor
               data-poster-footer-logo
               src="/assets/logo-footer.png"
               alt="Cenora Medical Center"
-              style={{ display: "block", position: "relative", top: 30, maxWidth: "none", flexShrink: 0, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
+              style={{ display: "block", position: "relative", top: 50, maxWidth: "none", flexShrink: 0, width: FOOTER_LOGO_WIDTH, height: FOOTER_LOGO_HEIGHT, objectFit: "contain", objectPosition: "center" }}
             />
           </div>
           <div style={{ display: "flex", flex: 1, minWidth: 0, alignItems: "flex-end", justifyContent: "flex-end", gap: 16 }}>
