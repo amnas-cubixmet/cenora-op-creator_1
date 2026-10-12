@@ -21,7 +21,7 @@ export function Logo({ className, width = 320, style }: LogoProps) {
     >
       <image x="0" y="0.43" width="76" height="77.14" href="/assets/logo-mark.png" />
       {/* The wordmark PNG has transparent padding; show its original ink bounds. */}
-      <svg x="84" y="2.125" width="250" height="73.75" viewBox="0 81 400 125" overflow="hidden">
+      <svg x="84" y="2.125" width="236" height="73.75" viewBox="0 81 400 125" overflow="hidden">
         <image width="400" height="250" href="/assets/logo-footer.png" />
       </svg>
     </svg>
